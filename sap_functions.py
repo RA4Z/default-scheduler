@@ -17,21 +17,21 @@ class SAP():
         for match in matches:
             return match
 
-    def __scroll_through_tabs(self, area, extensao, selected_tab):
+    def __scroll_through_tabs(self, area, extension, selected_tab):
         children = area.Children
         for child in children:
             if child.Type == "GuiTabStrip": 
-                extensao = extensao + "/tabs" + child.name
-                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
+                extension = extension + "/tabs" + child.name
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
             if child.Type == "GuiTab": 
-                extensao = extensao + "/tabp" + str(children[selected_tab].name)
-                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
+                extension = extension + "/tabp" + str(children[selected_tab].name)
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
             if child.Type == "GuiSimpleContainer": 
-                extensao = extensao + "/sub" + child.name
-                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
-            if child.Type == "GuiScrollContainer" and 'tabp' in extensao:
-                extensao = extensao + "/ssub" + child.name
-                area = self.session.findById(extensao)
+                extension = extension + "/sub" + child.name
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
+            if child.Type == "GuiScrollContainer" and 'tabp' in extension:
+                extension = extension + "/ssub" + child.name
+                area = self.session.findById(extension)
                 return area
         return area
 
