@@ -58,8 +58,8 @@ class SAP():
             if child.Type == "GuiCTextField":
                 try:
                     child.Text = ""
-                except:
-                    pass
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
 
     def change_active_tab(self, selected_tab):
         self.window = self.__active_window()
@@ -74,8 +74,8 @@ class SAP():
             if children(i).Text == field_name:
                 try:
                     children(i + 1).Text = desired_text
-                except:
-                    pass
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
 
     def write_text_field_until(self, field_name, desired_text, selected_tab=0):
         self.window = self.__active_window()
@@ -85,8 +85,8 @@ class SAP():
             if children(i).Text == field_name:
                 try:
                     children(i + 3).Text = desired_text
-                except:
-                    pass
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
 
     def multiple_selection_field(self, field_name, selected_tab=0):
         self.window = self.__active_window()
@@ -104,8 +104,8 @@ class SAP():
                         if campo in Obj.name:
                             Obj.press()
                             return
-                except:
-                    pass
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
