@@ -24,9 +24,12 @@ class SAP():
                 extensao = extensao + "/tabs" + child.name
                 return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
             if child.Type == "GuiTab": 
-                extensao = extensao + "/tabp" + child.name
+                extensao = extensao + "/tabp" + str(children[selected_tab].name)
                 return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
-            if child.Type == "GuiScrollContainer" and 'tabp' in extensao: 
+            if child.Type == "GuiSimpleContainer": 
+                extensao = extensao + "/sub" + child.name
+                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+            if child.Type == "GuiScrollContainer" and 'tabp' in extensao:
                 extensao = extensao + "/ssub" + child.name
                 area = self.session.findById(extensao)
                 return area
@@ -53,7 +56,10 @@ class SAP():
         children = area.Children
         for child in children:
             if child.Type == "GuiCTextField":
-                child.Text = ""
+                try:
+                    child.Text = ""
+                except:
+                    pass
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
