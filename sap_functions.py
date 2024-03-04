@@ -64,7 +64,11 @@ class SAP():
     def change_active_tab(self, selected_tab):
         self.window = self.__active_window()
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
-        area.Select()
+        try:
+            area.Select()
+        except Exception as e:
+            print(f'The error {e} has happenned!')
+        return
 
     def write_text_field(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
