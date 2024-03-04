@@ -17,18 +17,18 @@ class SAP():
         for match in matches:
             return match
 
-    def __scroll_through_tab(self, area, extensao, selected_tab):
+    def __scroll_through_tabs(self, area, extensao, selected_tab):
         children = area.Children
         for child in children:
             if child.Type == "GuiTabStrip": 
                 extensao = extensao + "/tabs" + child.name
-                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
             if child.Type == "GuiTab": 
                 extensao = extensao + "/tabp" + str(children[selected_tab].name)
-                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
             if child.Type == "GuiSimpleContainer": 
                 extensao = extensao + "/sub" + child.name
-                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+                return self.__scroll_through_tabs(self.session.findById(extensao), extensao, selected_tab)
             if child.Type == "GuiScrollContainer" and 'tabp' in extensao:
                 extensao = extensao + "/ssub" + child.name
                 area = self.session.findById(extensao)
@@ -52,12 +52,28 @@ class SAP():
 
     def clean_all_fields(self, selected_tab = 0):
         self.window = self.__active_window()
-        area = self.__scroll_through_tab(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         children = area.Children
         for child in children:
             if child.Type == "GuiCTextField":
                 try:
                     child.Text = ""
+                except:
+                    pass
+
+    def change_active_tab(self, selected_tab):
+        self.window = self.__active_window()
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        area.Select()
+
+    def write_text_field(self, field_name, desired_text, selected_tab=0):
+        self.window = self.__active_window()
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        children = area.Children
+        for i in range(len(children)):
+            if children(i).Text == field_name:
+                try:
+                    children(i + 1).Text = desired_text
                 except:
                     pass
 
