@@ -77,5 +77,35 @@ class SAP():
                 except:
                     pass
 
+    def write_text_field_until(self, field_name, desired_text, selected_tab=0):
+        self.window = self.__active_window()
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        children = area.Children
+        for i in range(len(children)):
+            if children(i).Text == field_name:
+                try:
+                    children(i + 3).Text = desired_text
+                except:
+                    pass
+
+    def multiple_selection_field(self, field_name, selected_tab=0):
+        self.window = self.__active_window()
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        children = area.Children
+        for i in range(len(children)):
+            if children(i).Text == field_name:
+                try:
+                    campo = children(i).name
+                    posicaoInicial = campo.find("%") + 1
+                    posicaoFinal = campo.find("-", posicaoInicial)
+                    campo = campo[posicaoInicial:posicaoFinal] + "-VALU_PUSH"
+                    for j in range(i, len(children)):
+                        Obj = children[j]
+                        if campo in Obj.name:
+                            Obj.press()
+                            return
+                except:
+                    pass
+
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
