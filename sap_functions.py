@@ -17,5 +17,11 @@ class SAP():
             messagebox.showerror(title='Erro ao Selecionar Transação', message=self.get_footer_message())
             exit()
     
+    def select_main_screen(self):
+        if not self.session.info.transaction == "SESSION_MANAGER":
+            self.session.startTransaction('SESSION_MANAGER')
+            if self.session.ActiveWindow.name == "wnd[1]":
+                self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
+
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
