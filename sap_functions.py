@@ -66,46 +66,58 @@ class SAP():
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         area.Select()
 
-    def write_text_field(self, field_name, desired_text, selected_tab=0):
+    def write_text_field(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         children = area.Children
         for i in range(len(children)):
             if children(i).Text == field_name:
-                try:
-                    children(i + 1).Text = desired_text
-                except Exception as e:
-                    print(f'The error {e} has happenned!')
+                if target_index == 0:
+                    try:
+                        children(i + 1).Text = desired_text
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    target_index -= 1
 
-    def write_text_field_until(self, field_name, desired_text, selected_tab=0):
+    def write_text_field_until(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         children = area.Children
         for i in range(len(children)):
             if children(i).Text == field_name:
-                try:
-                    children(i + 3).Text = desired_text
-                except Exception as e:
-                    print(f'The error {e} has happenned!')
+                if target_index == 0:
+                    try:
+                        children(i + 3).Text = desired_text
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    target_index -= 1
 
-    def multiple_selection_field(self, field_name, selected_tab=0):
+    def multiple_selection_field(self, field_name, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         children = area.Children
         for i in range(len(children)):
             if children(i).Text == field_name:
-                try:
-                    campo = children(i).name
-                    posicaoInicial = campo.find("%") + 1
-                    posicaoFinal = campo.find("-", posicaoInicial)
-                    campo = campo[posicaoInicial:posicaoFinal] + "-VALU_PUSH"
-                    for j in range(i, len(children)):
-                        Obj = children[j]
-                        if campo in Obj.name:
-                            Obj.press()
-                            return
-                except Exception as e:
-                    print(f'The error {e} has happenned!')
+                if target_index == 0:
+                    try:
+                        campo = children(i).name
+                        posicaoInicial = campo.find("%") + 1
+                        posicaoFinal = campo.find("-", posicaoInicial)
+                        campo = campo[posicaoInicial:posicaoFinal] + "-VALU_PUSH"
+                        for j in range(i, len(children)):
+                            Obj = children[j]
+                            if campo in Obj.name:
+                                Obj.press()
+                                return
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    target_index -= 1
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
