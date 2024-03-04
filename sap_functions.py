@@ -17,6 +17,21 @@ class SAP():
         for match in matches:
             return match
 
+    def __scroll_through_tab(self, area, extensao, selected_tab):
+        children = area.Children
+        for child in children:
+            if child.Type == "GuiTabStrip": 
+                extensao = extensao + "/tabs" + child.name
+                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+            if child.Type == "GuiTab": 
+                extensao = extensao + "/tabp" + child.name
+                return self.__scroll_through_tab(self.session.findById(extensao), extensao, selected_tab)
+            if child.Type == "GuiScrollContainer" and 'tabp' in extensao: 
+                extensao = extensao + "/ssub" + child.name
+                area = self.session.findById(extensao)
+                return area
+        return area
+
     def select_transaction(self, transaction):
         self.session.startTransaction(transaction)
         if self.session.activeWindow.name == 'wnd[1]':
@@ -32,9 +47,9 @@ class SAP():
             if self.session.ActiveWindow.name == "wnd[1]":
                 self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
 
-    def clean_all_fields(self):
+    def clean_all_fields(self, selected_tab = 0):
         self.window = self.__active_window()
-        area = self.session.findById(f"wnd[{self.window}]/usr")
+        area = self.__scroll_through_tab(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         children = area.Children
         for child in children:
             if child.Type == "GuiCTextField":
