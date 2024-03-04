@@ -1,5 +1,7 @@
 import win32com.client
 from tkinter import messagebox
+import re
+
 #module SAP Functions, development started in 2024/03/01
 class SAP():
     def __init__(self, window: int):
@@ -7,7 +9,14 @@ class SAP():
         application = sapguiauto.GetScriptingEngine
         connection = application.Children(0)
         self.session = connection.Children(window)
-    
+        self.window = self.__active_window()
+
+    def __active_window(self):
+        regex = re.compile('[0-9]')
+        matches = regex.findall(self.session.ActiveWindow.name)
+        for match in matches:
+            return match
+
     def select_transaction(self, transaction):
         self.session.startTransaction(transaction)
         if self.session.activeWindow.name == 'wnd[1]':
@@ -22,6 +31,14 @@ class SAP():
             self.session.startTransaction('SESSION_MANAGER')
             if self.session.ActiveWindow.name == "wnd[1]":
                 self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
+
+    def clean_all_fields(self):
+        self.window = self.__active_window()
+        area = self.session.findById(f"wnd[{self.window}]/usr")
+        children = area.Children
+        for child in children:
+            if child.Type == "GuiCTextField":
+                child.Text = ""
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
