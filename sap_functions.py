@@ -42,7 +42,7 @@ class SAP():
             self.session.findById("wnd[1]/usr/ctxtTCNT-PROF_DB").Text = "000000000001"
             self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
         if not self.session.info.transaction == transaction:
-            messagebox.showerror(title='Erro ao Selecionar Transação', message=self.get_footer_message())
+            messagebox.showerror(title='Error selecting transaction', message=self.get_footer_message())
             exit()
     
     def select_main_screen(self):
@@ -61,6 +61,18 @@ class SAP():
                     child.Text = ""
                 except Exception as e:
                     print(f'The error {e} has happenned!')
+
+    def insert_variant(self, variant_name):
+        try:
+            self.session.findById("wnd[0]/tbar[1]/btn[17]").press()
+            if self.session.activeWindow.name == 'wnd[1]':
+                self.session.findById("wnd[1]/usr/txtV-LOW").Text = variant_name
+                self.session.findById("wnd[1]/usr/txtENAME-LOW").Text = ""
+                self.session.findById("wnd[1]/tbar[0]/btn[8]").press()
+                if self.session.activewindow.name == 'wnd[1]':
+                    pass
+        except Exception as e:
+            print(f'The error {e} has happenned!')
 
     def change_active_tab(self, selected_tab):
         self.window = self.__active_window()
