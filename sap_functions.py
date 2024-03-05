@@ -70,8 +70,17 @@ class SAP():
                     return
                 else:
                     self.target_index -= 1
-        if objective == '':
-            pass
+        if objective == 'write_text_field_until':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        children(index + 3).Text = self.desired_text
+                        return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    self.target_index -= 1
         return False
 
     def select_transaction(self, transaction):
@@ -131,18 +140,11 @@ class SAP():
 
     def write_text_field_until(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
-        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
-        children = area.Children
-        for i in range(len(children)):
-            if children(i).Text == field_name:
-                if target_index == 0:
-                    try:
-                        children(i + 3).Text = desired_text
-                    except Exception as e:
-                        print(f'The error {e} has happenned!')
-                    return
-                else:
-                    target_index -= 1
+        self.field_name = field_name
+        self.desired_text = desired_text
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
 
     def find_text_field(self, field_name, selected_tab = 0):
         self.window = self.__active_window()
