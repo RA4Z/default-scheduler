@@ -36,6 +36,33 @@ class SAP():
                 return area
         return area
     
+    def __scroll_through_grid(self, extension):
+        if self.session.findById(extension).Type == 'GuiShell': 
+            try:
+                self.session.findById(extension).RowCount
+                return self.session.findById(extension)
+            except:
+                pass
+        children = self.session.findById(extension).Children
+        result = False
+        for i in range(len(children)):
+            if result: break
+            if children[i].Type == 'GuiCustomControl':
+                result = self.__scroll_through_grid(extension + '/cntl' + children[i].name)
+            if children[i].Type == 'GuiSimpleContainer':
+                result = self.__scroll_through_grid(extension + '/sub' + children[i].name)
+            if children[i].Type == 'GuiScrollContainer':
+                result = self.__scroll_through_grid(extension + '/ssub' + children[i].name)
+            if children[i].Type == 'GuiTableControl':
+                result = self.__scroll_through_grid(extension + '/tbl' + children[i].name)
+            if children[i].Type == 'GuiTab':
+                result = self.__scroll_through_grid(extension + '/tabp' + children[i].name)
+            if children[i].Type == 'GuiTabStrip':
+                result = self.__scroll_through_grid(extension + '/tabs' + children[i].name)
+            if children[i].Type in "GuiShell GuiSplitterShell GuiContainerShell GuiDockShell GuiMenuBar GuiToolbar GuiUserArea GuiTitlebar":
+                result = self.__scroll_through_grid(extension + '/' + children[i].name)
+        return result
+
     def __scroll_through_fields(self, extension, objective, selected_tab):
         children = self.session.findById(extension).Children
         result = False
@@ -139,7 +166,8 @@ class SAP():
                     children(index).press()
                     return True
             except Exception as e:
-                print(f'The error {e} has happenned!')
+                if str(e) != 'index out of range':
+                    print(f'The error {e} has happenned!')
             return
         return False
 
@@ -254,6 +282,10 @@ class SAP():
                 os.remove('temp_paste.txt')
         except Exception as e:
             print(f'The error {e} has happenned!')
+
+    def get_my_grid(self):
+        self.window = self.__active_window()
+        return self.__scroll_through_grid(f'wnd[{self.window}]/usr')
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
