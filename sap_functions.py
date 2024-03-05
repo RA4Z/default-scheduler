@@ -35,6 +35,24 @@ class SAP():
                 area = self.session.findById(extension)
                 return area
         return area
+    
+    def __scroll_through_fields(self, area, extension, objective, selected_tab):
+        children = area.Children
+        for child in children:
+            if child.Type == "GuiTabStrip": 
+                extension = extension + "/tabs" + child.name
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
+            if child.Type == "GuiTab": 
+                extension = extension + "/tabp" + str(children[selected_tab].name)
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
+            if child.Type == "GuiSimpleContainer": 
+                extension = extension + "/sub" + child.name
+                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
+            if child.Type == "GuiScrollContainer" and 'tabp' in extension:
+                extension = extension + "/ssub" + child.name
+                area = self.session.findById(extension)
+                return area
+        return area
 
     def select_transaction(self, transaction):
         self.session.startTransaction(transaction)
@@ -112,6 +130,18 @@ class SAP():
                     return
                 else:
                     target_index -= 1
+
+    def find_text_field(self, field_name, selected_tab = 0):
+        self.window = self.__active_window()
+        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
+        children = area.Children
+        for i in range(len(children)):
+            if field_name in children(i).Text:
+                try:
+                    return True
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
+                return
 
     def multiple_selection_field(self, field_name, target_index=0, selected_tab=0):
         self.window = self.__active_window()
