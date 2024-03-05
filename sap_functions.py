@@ -111,12 +111,27 @@ class SAP():
 
         if objective == 'flag_field':
             if children(index).Text == self.field_name:
-                try:
-                    children(index).Selected = self.desired_operator
-                    return True
-                except Exception as e:
-                    print(f'The error {e} has happenned!')
-                return
+                if self.target_index == 0:
+                    try:
+                        children(index).Selected = self.desired_operator
+                        return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    self.target_index -= 1
+
+        if objective == 'option_field':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        children(index).Select()
+                        return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    self.target_index -= 1
 
         return False
 
@@ -183,13 +198,21 @@ class SAP():
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
 
-    def flag_field(self, field_name, desired_operator: bool, selected_tab=0):
+    def flag_field(self, field_name, desired_operator: bool, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.desired_operator = desired_operator
+        self.target_index = target_index
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'flag_field', selected_tab)
 
+    def option_field(self, field_name, target_index=0, selected_tab=0):
+        self.window = self.__active_window()
+        self.field_name = field_name
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'option_field', selected_tab)
+    
     def find_text_field(self, field_name, selected_tab = 0):
         self.window = self.__active_window()
         self.field_name = field_name

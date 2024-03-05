@@ -1,6 +1,6 @@
 from sap_functions import SAP
 
 sap = SAP(0)
-sap.select_transaction('COHV')
+sap.select_transaction('CN47N')
 
-sap.flag_field('Ords.planej.',True)
+sap.option_field('Relat.objeto')
