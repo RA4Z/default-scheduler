@@ -81,6 +81,13 @@ class SAP():
                     return
                 else:
                     self.target_index -= 1
+        if objective == 'find_text_field':
+            if self.field_name in children(index).Text:
+                try:
+                    return True
+                except Exception as e:
+                    print(f'The error {e} has happenned!')
+                return
         return False
 
     def select_transaction(self, transaction):
@@ -148,15 +155,9 @@ class SAP():
 
     def find_text_field(self, field_name, selected_tab = 0):
         self.window = self.__active_window()
-        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
-        children = area.Children
-        for i in range(len(children)):
-            if field_name in children(i).Text:
-                try:
-                    return True
-                except Exception as e:
-                    print(f'The error {e} has happenned!')
-                return
+        self.field_name = field_name
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'find_text_field', selected_tab)
 
     def multiple_selection_field(self, field_name, target_index=0, selected_tab=0):
         self.window = self.__active_window()
