@@ -133,6 +133,14 @@ class SAP():
                 else:
                     self.target_index -= 1
 
+        if objective == 'press_button':
+            try:
+                if self.field_name in children(index).Text or self.field_name in children(index).Tooltip:
+                    children(index).press()
+                    return True
+            except Exception as e:
+                print(f'The error {e} has happenned!')
+            return
         return False
 
     def select_transaction(self, transaction):
@@ -212,6 +220,13 @@ class SAP():
         self.target_index = target_index
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'option_field', selected_tab)
+    
+    def press_button(self, field_name, target_index=0, selected_tab=0):
+        self.window = self.__active_window()
+        self.field_name = field_name
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]", 'press_button', selected_tab)
     
     def find_text_field(self, field_name, selected_tab = 0):
         self.window = self.__active_window()
