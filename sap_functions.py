@@ -36,23 +36,43 @@ class SAP():
                 return area
         return area
     
-    def __scroll_through_fields(self, area, extension, objective, selected_tab):
-        children = area.Children
-        for child in children:
-            if child.Type == "GuiTabStrip": 
-                extension = extension + "/tabs" + child.name
-                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
-            if child.Type == "GuiTab": 
-                extension = extension + "/tabp" + str(children[selected_tab].name)
-                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
-            if child.Type == "GuiSimpleContainer": 
-                extension = extension + "/sub" + child.name
-                return self.__scroll_through_tabs(self.session.findById(extension), extension, selected_tab)
-            if child.Type == "GuiScrollContainer" and 'tabp' in extension:
-                extension = extension + "/ssub" + child.name
-                area = self.session.findById(extension)
-                return area
-        return area
+    def __scroll_through_fields(self, extension, objective, selected_tab):
+        children = self.session.findById(extension).Children
+        result = False
+        for i in range(len(children)):
+            if result:
+                break
+            else:
+                result = self.__generic_conditionals(i, children, objective)
+            if children[i].Type == "GuiTabStrip" and not 'ssub' in extension: 
+                result = self.__scroll_through_fields(extension + "/tabs" + children[i].name, objective, selected_tab)
+            if children[i].Type == "GuiTab" and not 'tabp' in extension: 
+                result = self.__scroll_through_fields(extension + "/tabp" + str(children[selected_tab].name), objective, selected_tab)
+            if children[i].Type == "GuiSimpleContainer": 
+                result = self.__scroll_through_fields(extension + "/sub" + children[i].name, objective, selected_tab)
+            if children[i].Type == "GuiScrollContainer":
+                result = self.__scroll_through_fields(extension + "/ssub" + children[i].name, objective, selected_tab)
+            if children[i].Type == "GuiCustomControl":
+                result = self.__scroll_through_fields(extension + "/cntl" + children[i].name, objective, selected_tab)
+            if children[i].Type in "GuiShell GuiSplitterShell GuiContainerShell GuiDockShell GuiMenuBar GuiToolbar GuiUserArea GuiTitlebar":
+                result = self.__scroll_through_fields(extension + "/" + children[i].name, objective, selected_tab)
+        return result
+
+    def __generic_conditionals(self, index, children, objective):
+        if objective == 'write_text_field':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        children(index + 1).Text = self.desired_text
+                        return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    self.target_index -= 1
+        if objective == '':
+            pass
+        return False
 
     def select_transaction(self, transaction):
         self.session.startTransaction(transaction)
@@ -103,18 +123,11 @@ class SAP():
 
     def write_text_field(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
-        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
-        children = area.Children
-        for i in range(len(children)):
-            if children(i).Text == field_name:
-                if target_index == 0:
-                    try:
-                        children(i + 1).Text = desired_text
-                    except Exception as e:
-                        print(f'The error {e} has happenned!')
-                    return
-                else:
-                    target_index -= 1
+        self.field_name = field_name
+        self.desired_text = desired_text
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field', selected_tab)
 
     def write_text_field_until(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
