@@ -1,6 +1,7 @@
 import win32com.client
 from tkinter import messagebox
 import re
+import os
 
 #module SAP Functions, development started in 2024/03/01
 class SAP():
@@ -122,6 +123,17 @@ class SAP():
                     return
                 else:
                     target_index -= 1
+
+    def multiple_selection_paste_data(self, data):
+        with open('temp_paste.txt', 'w') as arquivo:
+            arquivo.write(data)
+        self.session.findById("wnd[1]/tbar[0]/btn[23]").press()
+        self.session.findById("wnd[2]/usr/ctxtDY_PATH").text = os.getcwd()
+        self.session.findById("wnd[2]/usr/ctxtDY_FILENAME").text = "temp_paste.txt"
+        self.session.findById("wnd[2]/tbar[0]/btn[0]").press()
+        self.session.findById("wnd[1]/tbar[0]/btn[8]").press()
+        if os.path.exists('temp_paste.txt'):
+            os.remove('temp_paste.txt')
 
     def get_footer_message(self):
         return(self.session.findById("wnd[0]/sbar").Text)
