@@ -40,21 +40,20 @@ class SAP():
         children = self.session.findById(extension).Children
         result = False
         for i in range(len(children)):
-            if result:
-                break
-            else:
+            if not result:
                 result = self.__generic_conditionals(i, children, objective)
-            if children[i].Type == "GuiTabStrip" and not 'ssub' in extension: 
+            if result: break
+            if not result and children[i].Type == "GuiTabStrip" and not 'ssub' in extension: 
                 result = self.__scroll_through_fields(extension + "/tabs" + children[i].name, objective, selected_tab)
-            if children[i].Type == "GuiTab" and not 'tabp' in extension: 
+            if not result and children[i].Type == "GuiTab" and not 'tabp' in extension: 
                 result = self.__scroll_through_fields(extension + "/tabp" + str(children[selected_tab].name), objective, selected_tab)
-            if children[i].Type == "GuiSimpleContainer": 
+            if not result and children[i].Type == "GuiSimpleContainer": 
                 result = self.__scroll_through_fields(extension + "/sub" + children[i].name, objective, selected_tab)
-            if children[i].Type == "GuiScrollContainer":
+            if not result and children[i].Type == "GuiScrollContainer":
                 result = self.__scroll_through_fields(extension + "/ssub" + children[i].name, objective, selected_tab)
-            if children[i].Type == "GuiCustomControl":
+            if not result and children[i].Type == "GuiCustomControl":
                 result = self.__scroll_through_fields(extension + "/cntl" + children[i].name, objective, selected_tab)
-            if children[i].Type in "GuiShell GuiSplitterShell GuiContainerShell GuiDockShell GuiMenuBar GuiToolbar GuiUserArea GuiTitlebar":
+            if not result and children[i].Type in "GuiShell GuiSplitterShell GuiContainerShell GuiDockShell GuiMenuBar GuiToolbar GuiUserArea GuiTitlebar":
                 result = self.__scroll_through_fields(extension + "/" + children[i].name, objective, selected_tab)
         return result
 
@@ -70,6 +69,7 @@ class SAP():
                     return
                 else:
                     self.target_index -= 1
+
         if objective == 'write_text_field_until':
             if children(index).Text == self.field_name:
                 if self.target_index == 0:
@@ -81,6 +81,7 @@ class SAP():
                     return
                 else:
                     self.target_index -= 1
+
         if objective == 'find_text_field':
             if self.field_name in children(index).Text:
                 try:
@@ -88,6 +89,25 @@ class SAP():
                 except Exception as e:
                     print(f'The error {e} has happenned!')
                 return
+                    
+        if objective == 'multiple_selection_field':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        campo = children(index).name
+                        posicaoInicial = campo.find("%") + 1
+                        posicaoFinal = campo.find("-", posicaoInicial)
+                        campo = campo[posicaoInicial:posicaoFinal] + "-VALU_PUSH"
+                        for j in range(index, len(children)):
+                            Obj = children[j]
+                            if campo in Obj.name:
+                                Obj.press()
+                                return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                else:
+                    self.target_index -= 1
         return False
 
     def select_transaction(self, transaction):
@@ -161,26 +181,10 @@ class SAP():
 
     def multiple_selection_field(self, field_name, target_index=0, selected_tab=0):
         self.window = self.__active_window()
-        area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
-        children = area.Children
-        for i in range(len(children)):
-            if children(i).Text == field_name:
-                if target_index == 0:
-                    try:
-                        campo = children(i).name
-                        posicaoInicial = campo.find("%") + 1
-                        posicaoFinal = campo.find("-", posicaoInicial)
-                        campo = campo[posicaoInicial:posicaoFinal] + "-VALU_PUSH"
-                        for j in range(i, len(children)):
-                            Obj = children[j]
-                            if campo in Obj.name:
-                                Obj.press()
-                                return
-                    except Exception as e:
-                        print(f'The error {e} has happenned!')
-                    return
-                else:
-                    target_index -= 1
+        self.field_name = field_name
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'multiple_selection_field', selected_tab)
 
     def multiple_selection_paste_data(self, data):
         try:
