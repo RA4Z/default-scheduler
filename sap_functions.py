@@ -283,6 +283,19 @@ class SAP():
         except Exception as e:
             print(f'The error {e} has happenned!')
 
+    def save_file(self, file_name, path, option=0, type_of_file='txt'):
+        if 'xls' in type_of_file:
+            self.session.findById("wnd[0]/mbar/menu[0]/menu[1]/menu[1]").Select()
+            self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
+        else:
+            self.session.findById("wnd[0]/mbar/menu[0]/menu[1]/menu[2]").Select()
+            self.session.findById(f"wnd[1]/usr/subSUBSCREEN_STEPLOOP:SAPLSPO5:0150/sub:SAPLSPO5:0150/radSPOPLI-SELFLAG[{option},0]").Select()
+            self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
+
+        self.session.findById("wnd[1]/usr/ctxtDY_PATH").Text = path
+        self.session.findById("wnd[1]/usr/ctxtDY_FILENAME").Text = f'{file_name}.{type_of_file}'
+        self.session.findById("wnd[1]/tbar[0]/btn[11]").press()
+
     def view_in_list_form(self):
         myGrid = self.get_my_grid()
         myGrid.pressToolbarContextButton("&MB_VIEW")
