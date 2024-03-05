@@ -283,6 +283,11 @@ class SAP():
         except Exception as e:
             print(f'The error {e} has happenned!')
 
+    def view_in_list_form(self):
+        myGrid = self.get_my_grid()
+        myGrid.pressToolbarContextButton("&MB_VIEW")
+        myGrid.SelectContextMenuItem("&PRINT_BACK_PREVIEW")
+
     def get_my_grid(self):
         self.window = self.__active_window()
         return self.__scroll_through_grid(f'wnd[{self.window}]/usr')
