@@ -1,5 +1,6 @@
 from sap_functions import SAP
 
 sap = SAP(0)
-sap.select_transaction('CJ20N')
-sap.press_button('Abrir')
+sap.select_transaction('MD04')
+sap.run_actual_transaction()
+sap.press_button('Planejamento individual interativo')

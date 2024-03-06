@@ -199,6 +199,16 @@ class SAP():
                 if self.field_name in children(index).Text or self.field_name in children(index).Tooltip:
                     children(index).press()
                     return True
+                if self.session.info.transaction == 'CJ20N' or self.session.info.transaction == 'MD04':
+                    try:
+                        for i in range(101):
+                            if children(index).GetButtonTooltip(i) != '':
+                                id_button = children(index).GetButtonId(i)
+                                tooltip_button = children(index).GetButtonTooltip(i)
+                                if self.field_name in tooltip_button:
+                                    children(index).pressButton(id_button)
+                    except:
+                        pass
             except Exception as e:
                 if str(e) != 'index out of range':
                     print(f'The error {e} has happenned!')
@@ -250,9 +260,10 @@ class SAP():
                     print(f'The error {e} has happenned!')
 
     def run_actual_transaction(self):
+        screen_title = self.session.activeWindow.text
         self.session.findById(f'wnd[{self.window}]').sendVKey(0)
         try:
-            self.session.findById(f'wnd[{self.window}]').sendVKey(8)
+            if screen_title == self.session.activeWindow.text: self.session.findById(f'wnd[{self.window}]').sendVKey(8)
         except:
             pass
 
