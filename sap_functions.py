@@ -197,6 +197,21 @@ class SAP():
                 if str(e) != 'index out of range':
                     print(f'The error {e} has happenned!')
             return
+        
+        if objective == 'choose_text_combo':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        entries = children(index + 1).Entries
+                        for cont in range(len(entries)):
+                            entry = entries.Item(cont)
+                            if self.desired_text == str(entry.Value):
+                                children(index + 1).key = entry.key
+                                return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+
         return False
 
     # Selects a transaction within the SAP session.
@@ -268,6 +283,14 @@ class SAP():
         self.target_index = target_index
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
+
+    def choose_text_combo(self, field_name, desired_text, target_index=0, selected_tab=0):
+        self.window = self.__active_window()
+        self.field_name = field_name
+        self.desired_text = desired_text
+        self.target_index = target_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'choose_text_combo', selected_tab)
 
     # Flags a field within the SAP session.
     def flag_field(self, field_name, desired_operator: bool, target_index=0, selected_tab=0):
