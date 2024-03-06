@@ -95,6 +95,33 @@ class SAP():
                 result = self.__scroll_through_grid(extension + '/' + children[i].name)
         return result
 
+    # Scrolls through a table based on its extension.
+    def __scroll_through_table(self, extension):
+        if 'tbl' in extension: 
+            try:
+                return self.session.findById(extension)
+            except:
+                pass
+        children = self.session.findById(extension).Children
+        result = False
+        for i in range(len(children)):
+            if result: break
+            if children[i].Type == 'GuiCustomControl':
+                result = self.__scroll_through_table(extension + '/cntl' + children[i].name)
+            if children[i].Type == 'GuiSimpleContainer':
+                result = self.__scroll_through_table(extension + '/sub' + children[i].name)
+            if children[i].Type == 'GuiScrollContainer':
+                result = self.__scroll_through_table(extension + '/ssub' + children[i].name)
+            if children[i].Type == 'GuiTableControl':
+                result = self.__scroll_through_table(extension + '/tbl' + children[i].name)
+            if children[i].Type == 'GuiTab':
+                result = self.__scroll_through_table(extension + '/tabp' + children[i].name)
+            if children[i].Type == 'GuiTabStrip':
+                result = self.__scroll_through_table(extension + '/tabs' + children[i].name)
+            if children[i].Type in "GuiShell GuiSplitterShell GuiContainerShell GuiDockShell GuiMenuBar GuiToolbar GuiUserArea GuiTitlebar":
+                result = self.__scroll_through_table(extension + '/' + children[i].name)
+        return result
+    
     # Scrolls through fields within a specified extension and objective.
     def __scroll_through_fields(self, extension, objective, selected_tab):
         children = self.session.findById(extension).Children
@@ -413,6 +440,15 @@ class SAP():
         myGrid = self.get_my_grid()
         myGrid.pressToolbarContextButton("&MB_VIEW")
         myGrid.SelectContextMenuItem("&PRINT_BACK_PREVIEW")
+
+    # Retrieves the table object within the SAP session.
+    def get_my_table(self):
+        self.window = self.__active_window()
+        return self.__scroll_through_table(f'wnd[{self.window}]/usr')
+    
+    # Count the total number of rows inside the Table
+    def get_my_table_count_rows(self, my_table):
+        self.window = self.__active_window()
 
     # Retrieves the grid object within the SAP session.
     def get_my_grid(self):
