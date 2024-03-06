@@ -9,10 +9,12 @@ class SAP():
     
     # Initializes the SAP object with a specified window index.
     def __init__(self, window: int):
-        self.__verify_sap_open()
-        sapguiauto = win32com.client.GetObject('SAPGUI')
-        application = sapguiauto.GetScriptingEngine
-        self.connection = application.Children(0)
+        self.connection = self.__verify_sap_open()
+        
+        if self.connection.Children(0).info.user == '':
+            messagebox.showerror(title='SAP user is logged out!',message='You need to log in to SAP to run this script! Please log in and try again.')
+            exit()
+
         self.__count_sap_screens(window)
         self.session = self.connection.Children(window)
         self.window = self.__active_window()
@@ -31,7 +33,7 @@ class SAP():
     def __count_sap_screens(self, window: int):
         while len(self.connection.sessions) < window + 1:
             self.connection.Children(0).createSession()
-            time.sleep(5)
+            time.sleep(3)
 
     # Finds the active window index.
     def __active_window(self):
