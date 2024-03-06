@@ -452,6 +452,22 @@ class SAP():
         total_columns = my_table.columns.Count
         total_rows = my_table.Children.Count / total_columns
         return round(total_rows)
+    
+    # Return the index of a column from a SAP table
+    def get_my_table_column_index(self, my_table, column_name):
+        self.window = self.__active_window()
+        total_columns = my_table.columns.Count
+        for i in range(total_columns):
+            if column_name == my_table.columns.elementAt(i).Title:
+                return i
+
+    def get_my_table_row_index(self, my_table, column_index, row_value):
+        #RETURN THE INDEX OF A ROW
+        pass
+
+    def get_my_table_cell_value(self, my_table, column_index, index_row):
+        #RETURN A TEXT WITH THE VALUE DESIRED ACCORDING TO THE COLUMN NAME AND DESIRED ROW
+        pass
 
     # Retrieves the grid object within the SAP session.
     def get_my_grid(self):

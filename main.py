@@ -6,4 +6,6 @@ sap.run_actual_transaction()
 
 my_table = sap.get_my_table()
 rows = sap.get_my_table_count_rows(my_table)
-print(rows)
+col = sap.get_my_table_column_index(my_table, 'Depósito')
+
+print(col)
