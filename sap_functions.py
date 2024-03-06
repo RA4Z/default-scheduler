@@ -2,17 +2,36 @@ import win32com.client
 from tkinter import messagebox
 import re
 import os
+import time
 
 #module SAP Functions, development started in 2024/03/01
 class SAP():
     
     # Initializes the SAP object with a specified window index.
     def __init__(self, window: int):
+        self.__verify_sap_open()
         sapguiauto = win32com.client.GetObject('SAPGUI')
         application = sapguiauto.GetScriptingEngine
-        connection = application.Children(0)
-        self.session = connection.Children(window)
+        self.connection = application.Children(0)
+        self.__count_sap_screens(window)
+        self.session = self.connection.Children(window)
         self.window = self.__active_window()
+
+    #Verify if SAP is open
+    def __verify_sap_open(self):
+        try:
+            sapguiauto = win32com.client.GetObject('SAPGUI')
+            application = sapguiauto.GetScriptingEngine
+            return application.Children(0)
+        except:
+            messagebox.showerror(title='SAP is not open!',message='SAP must be open to run this script! Please, open it and try to run again.')
+            exit()
+
+    #Count the number of open SAP screens 
+    def __count_sap_screens(self, window: int):
+        while len(self.connection.sessions) < window + 1:
+            self.connection.Children(0).createSession()
+            time.sleep(5)
 
     # Finds the active window index.
     def __active_window(self):
