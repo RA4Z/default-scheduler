@@ -25,7 +25,7 @@ class SAP():
         self.session = self.connection.Children(window)
         self.window = self.__active_window()
 
-    #Verify if SAP is open
+    # Verify if SAP is open
     def __verify_sap_open(self):
         try:
             sapguiauto = win32com.client.GetObject('SAPGUI')
@@ -35,7 +35,7 @@ class SAP():
             messagebox.showerror(title='SAP is not open!',message='SAP must be open to run this script! Please, open it and try to run again.')
             exit()
 
-    #Count the number of open SAP screens 
+    # Count the number of open SAP screens 
     def __count_sap_screens(self, window: int):
         while len(self.connection.sessions) < window + 1:
             self.connection.Children(0).createSession()
@@ -259,7 +259,7 @@ class SAP():
                 except Exception as e:
                     print(f'The error {e} has happenned!')
 
-    #Run the active transaction in the SAP screen
+    # Run the active transaction in the SAP screen
     def run_actual_transaction(self):
         screen_title = self.session.activeWindow.text
         self.session.findById(f'wnd[{self.window}]').sendVKey(0)
@@ -309,7 +309,7 @@ class SAP():
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
 
-    #Choose an option inside a SAP combo box 
+    # Choose an option inside a SAP combo box 
     def choose_text_combo(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
@@ -373,7 +373,7 @@ class SAP():
         except Exception as e:
             print(f'The error {e} has happenned!')
 
-    #Navigate around the menu in the SAP header
+    # Navigate around the menu in the SAP header
     def navigate_into_menu_header(self, path):
         try:
             id_path = 'wnd[0]/mbar'
@@ -418,6 +418,26 @@ class SAP():
     def get_my_grid(self):
         self.window = self.__active_window()
         return self.__scroll_through_grid(f'wnd[{self.window}]/usr')
+
+    # Count the total number of rows inside the Grid
+    def get_my_grid_count_rows(self, my_grid):
+        self.window = self.__active_window()
+        rows = my_grid.RowCount
+        if rows > 0: 
+            visiblerow = my_grid.VisibleRowCount
+            visiblerow0 = my_grid.VisibleRowCount
+            npagedown = rows // visiblerow0
+            if npagedown > 1:
+                for j in range(1, npagedown + 1):
+                    try:
+                        my_grid.firstVisibleRow = visiblerow - 1
+                        visiblerow += visiblerow0
+                    except:
+                        break
+            else:
+                npagedown = npagedown
+            my_grid.firstVisibleRow = 0
+        return rows
 
     # Retrieves the footer message within the SAP session.
     def get_footer_message(self):
