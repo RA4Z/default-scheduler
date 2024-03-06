@@ -8,12 +8,18 @@ import time
 class SAP():
     
     # Initializes the SAP object with a specified window index.
-    def __init__(self, window: int):
+    def __init__(self, window: int, language='PT'):
         self.connection = self.__verify_sap_open()
         
         if self.connection.Children(0).info.user == '':
             messagebox.showerror(title='SAP user is logged out!',message='You need to log in to SAP to run this script! Please log in and try again.')
             exit()
+
+        if self.connection.Children(0).info.systemName == 'EQ0':
+            messagebox.showwarning(title='SAP System Alert!',message=f"You're with SAP Quality Assurance open, (SAP QA)\nMany things may not happen as desired!")
+        
+        if self.connection.Children(0).info.language != language:
+            messagebox.showwarning(title='SAP Language conflict!',message=f'Your SAP system currently does not have the {language} language selected, many errors may occur')
 
         self.__count_sap_screens(window)
         self.session = self.connection.Children(window)
