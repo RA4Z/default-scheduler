@@ -449,6 +449,9 @@ class SAP():
     # Count the total number of rows inside the Table
     def get_my_table_count_rows(self, my_table):
         self.window = self.__active_window()
+        total_columns = my_table.columns.Count
+        total_rows = my_table.Children.Count / total_columns
+        return round(total_rows)
 
     # Retrieves the grid object within the SAP session.
     def get_my_grid(self):

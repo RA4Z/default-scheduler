@@ -5,5 +5,5 @@ sap.select_transaction('MD04')
 sap.run_actual_transaction()
 
 my_table = sap.get_my_table()
-children = my_table.Children
-print(children.Count)
+rows = sap.get_my_table_count_rows(my_table)
+print(rows)
