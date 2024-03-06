@@ -249,6 +249,13 @@ class SAP():
                 except Exception as e:
                     print(f'The error {e} has happenned!')
 
+    def run_actual_transaction(self):
+        self.session.findById(f'wnd[{self.window}]').sendVKey(0)
+        try:
+            self.session.findById(f'wnd[{self.window}]').sendVKey(8)
+        except:
+            pass
+
     # Inserts a variant into the SAP session.
     def insert_variant(self, variant_name):
         try:
@@ -290,6 +297,7 @@ class SAP():
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
 
+    #Choose an option inside a SAP combo box 
     def choose_text_combo(self, field_name, desired_text, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
