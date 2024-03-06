@@ -259,6 +259,7 @@ class SAP():
                 except Exception as e:
                     print(f'The error {e} has happenned!')
 
+    #Run the active transaction in the SAP screen
     def run_actual_transaction(self):
         screen_title = self.session.activeWindow.text
         self.session.findById(f'wnd[{self.window}]').sendVKey(0)
@@ -369,6 +370,27 @@ class SAP():
             self.session.findById("wnd[1]/tbar[0]/btn[8]").press()
             if os.path.exists('temp_paste.txt'):
                 os.remove('temp_paste.txt')
+        except Exception as e:
+            print(f'The error {e} has happenned!')
+
+    #Navigate around the menu in the SAP header
+    def navigate_into_menu_header(self, path):
+        try:
+            id_path = 'wnd[0]/mbar'
+            if ';' not in path:
+                messagebox.showerror(title='Code Error!',message='The menu path must be in the format "path1;path2;path3"')
+                exit()
+
+            list_of_paths = path.split(';')
+            for active_path in list_of_paths:
+                children = self.session.findById(id_path).Children
+                for i in range(children.Count):
+                    Obj = children(i)
+                    if active_path in Obj.Text:
+                        menu_address = Obj.ID.split("/")[-1]
+                        id_path += f'/{menu_address}'
+                        break
+            self.session.findById(id_path).Select()
         except Exception as e:
             print(f'The error {e} has happenned!')
 
