@@ -448,19 +448,18 @@ class SAP():
     def get_my_table(self):
         self.window = self.__active_window()
         return self.__scroll_through_table(f'wnd[{self.window}]/usr')
-    
-    # Count the total number of rows inside the Table
-    def get_my_table_count_visible_rows(self, my_table):
-        total_columns = my_table.columns.Count
-        total_rows = my_table.Children.Count / total_columns
-        return round(total_rows)
-            
+        
+    # Retrieves a value from a cell
     def my_table_get_cell_value(self, my_table, row_index, column_index):
         try:
             return my_table.getCell(row_index,column_index).Text
         except:
             return 'Empty'
 
+    # my_table tips:
+    #VisibleRowCount => Count the number of Visible Rows in the table
+    #RowCount => Count the number of Rows inside the table
+        
     # Retrieves the grid object within the SAP session.
     def get_my_grid(self):
         self.window = self.__active_window()
