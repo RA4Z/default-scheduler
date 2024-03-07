@@ -1,5 +1,6 @@
 import tkinter as tk
 import getpass
+from tkinter import messagebox
 
 class Application(tk.Tk):
     def __init__(self, automation_name, automation_description, automation_developer, automation_requester):
@@ -10,6 +11,7 @@ class Application(tk.Tk):
         self.automation_requester = automation_requester
         self.title(self.automation_name)
         self.geometry("1000x750")
+        self.result = False
 
         self.components_styles()
         self.components_position()
@@ -17,7 +19,7 @@ class Application(tk.Tk):
     # Declare the components styles
     def components_styles(self):
         self.title_label = tk.Label(self, text=f"Welcome to {self.automation_name}, {getpass.getuser().upper()}", font=("Helvetica", 18, "bold"), wraplength=800)
-        self.run_button = tk.Button(self, text="Run Automation", font=("Helvetica", 15, "bold"))
+        self.run_button = tk.Button(self, text="Run Automation", font=("Helvetica", 15, "bold"), command=self.run_script)
         self.subtitle_label = tk.Label(self, text="Example of a Data Column", font=("Helvetica", 12, "bold"), wraplength=250)
         self.text_field = tk.Text(self, height=30, width=25)
         self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 14))
@@ -32,6 +34,11 @@ class Application(tk.Tk):
         self.automation_label.place(relx=0.4, rely=0.15)
         self.automation_credits.pack(pady=5, side="bottom")
         
+    def run_script(self):
+        self.option_selected = messagebox.askquestion(title='Run Automation', message='Are you sure you want to run this Automation?')
+        if self.option_selected == 'yes':
+            self.result = True
+            self.destroy()
 
 if __name__ == "__main__":
     app = Application('Python Default Script',
