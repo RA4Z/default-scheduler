@@ -20,7 +20,7 @@ class Application(tk.Tk):
         self.run_button = tk.Button(self, text="Run Automation", font=("Helvetica", 15, "bold"))
         self.subtitle_label = tk.Label(self, text="Example of a Data Column", font=("Helvetica", 12, "bold"), wraplength=250)
         self.text_field = tk.Text(self, height=30, width=25)
-        self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 12))
+        self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 14))
         self.automation_credits = tk.Label(self, text=f'{self.automation_name}, requested by {self.automation_requester} and developed by {self.automation_developer}', wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
 
     # Put the components into the Application interface
@@ -35,6 +35,6 @@ class Application(tk.Tk):
 
 if __name__ == "__main__":
     app = Application('Python Default Script',
-                      'Description of the Automation generated with my own creativity during testing this Automation... Description of the Automation generated with my own creativity during testing this Automation... Description of the Automation generated with my own creativity during testing this Automation... Description of the Automation generated with my own creativity during testing this Automation... Description of the Automation generated with my own creativity during testing this Automation...',
+                      'Graphical interface model developed in Tkinter by Robert Aron Zimmermann, an interface was developed to be used as a basis in the development of other automations that are interactive with SAP, the entire algorithm was developed in Python with the intention of facilitating interaction between Developer/ SAP, thus developing high quality automation in a short period of time with several error treatments. Doubts or Suggestions contact Robert Aron Zimmermann robertn@weg.net',
                       'Robert Aron Zimmermann', 'Robert Aron Zimmermann')
     app.mainloop()
