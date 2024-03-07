@@ -1,6 +1,9 @@
 from statements import State
+from work_functions import Work_SAP
 
 script = State()
+work = Work_SAP(script.sap)
+
 script.app.mainloop()
 
 if script.app.result:
@@ -8,4 +11,7 @@ if script.app.result:
 
     for data in all_data:
         if data.strip() != '':
-            pass    #PUT YOUR CODE THERE
+            try:
+                work.cn47n(data.strip()) #PUT YOUR CODE THERE
+            except Exception as err:
+                print(err)
