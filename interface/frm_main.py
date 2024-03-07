@@ -37,6 +37,10 @@ class Application(tk.Tk):
     def run_script(self):
         self.option_selected = messagebox.askquestion(title='Run Automation', message='Are you sure you want to run this Automation?')
         if self.option_selected == 'yes':
+            self.data = self.text_field.get("1.0", tk.END)
+            if self.data.strip() == '':
+                messagebox.showerror(title='User Error', message='To run this automation you need to write some data into the text field!')
+                return
             self.result = True
             self.destroy()
 
