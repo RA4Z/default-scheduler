@@ -8,6 +8,5 @@ sap = SAP(1)
 
 my_table = sap.get_my_table()
 rows = sap.get_my_table_count_visible_rows(my_table)
-col_index = sap.get_my_table_column_index(my_table, 'Qtd.disponível')
-row_index = sap.get_my_table_row_index(my_table, col_index, '90')
-print(row_index)
+for i in range(rows):
+    print(f'MRP = {sap.my_table_get_cell_value(my_table, i, 2)} Entrada = {sap.my_table_get_cell_value(my_table, i, 4)}')

@@ -4,6 +4,9 @@ import re
 import os
 import time
 
+#SAP Scripting Documentation:
+#https://help.sap.com/docs/sap_gui_for_windows/b47d018c3b9b45e897faf66a6c0885a8/a2e9357389334dc89eecc1fb13999ee3.html
+
 #module SAP Functions, development started in 2024/03/01
 class SAP():
     
@@ -451,25 +454,12 @@ class SAP():
         total_columns = my_table.columns.Count
         total_rows = my_table.Children.Count / total_columns
         return round(total_rows)
-    
-    # Return the index of a column from a SAP table
-    def get_my_table_column_index(self, my_table, column_name):
-        total_columns = my_table.columns.Count
-        for i in range(total_columns):
-            if column_name == my_table.columns.elementAt(i).Title:
-                return i
-
-    # Return the index of a row from a SAP table
-    def get_my_table_row_index(self, my_table, column_index, row_value:str):
-        rows = self.get_my_table_count_visible_rows(my_table)
-        for i in range(rows):
-            target = str(my_table.getCell(i, column_index).Text).strip()
-            if row_value == target:
-                return i
-
-    def get_my_table_cell_value(self, my_table, column_index, index_row):
-        #RETURN A TEXT WITH THE VALUE DESIRED ACCORDING TO THE COLUMN NAME AND DESIRED ROW
-        pass
+            
+    def my_table_get_cell_value(self, my_table, row_index, column_index):
+        try:
+            return my_table.getCell(row_index,column_index).Text
+        except:
+            return 'Empty'
 
     # Retrieves the grid object within the SAP session.
     def get_my_grid(self):
