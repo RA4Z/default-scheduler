@@ -1,5 +1,7 @@
 from statements import State
 from work_functions import Work_SAP
+import progressbar
+import time
 
 script = State()
 work = Work_SAP(script.sap)
@@ -7,15 +9,18 @@ work = Work_SAP(script.sap)
 script.app.mainloop()
 
 if script.app.result:
-    all_data = str(script.app.data).split('\n')
+    data = str(script.app.data).split('\n')
+    bar = progressbar.ProgressBar(max_value=len(data)-1)
 
-    for data in all_data:
-        if data.strip() != '':
+    for i in range(len(data)):
+        actual = data[i].strip()
+        if actual != '':
             try:
-                result = work.co02(data.strip()) #PUT YOUR CODE THERE
+                result = work.co02(actual)
                 if result != '':
-                    print(f'{data.strip()} => {result}')
+                    print(f'{actual} => {result}')
                 else:
-                    print(f'{data.strip()} => Encontrada com sucesso!')
+                    print(f'{actual} => Encontrada com sucesso!')
             except Exception as err:
-                    print(f'{data.strip()} => {err}')
+                    print(f'{actual} => {err}')
+        bar.update(i)
