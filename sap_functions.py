@@ -447,23 +447,25 @@ class SAP():
         return self.__scroll_through_table(f'wnd[{self.window}]/usr')
     
     # Count the total number of rows inside the Table
-    def get_my_table_count_rows(self, my_table):
-        self.window = self.__active_window()
+    def get_my_table_count_visible_rows(self, my_table):
         total_columns = my_table.columns.Count
         total_rows = my_table.Children.Count / total_columns
         return round(total_rows)
     
     # Return the index of a column from a SAP table
     def get_my_table_column_index(self, my_table, column_name):
-        self.window = self.__active_window()
         total_columns = my_table.columns.Count
         for i in range(total_columns):
             if column_name == my_table.columns.elementAt(i).Title:
                 return i
 
-    def get_my_table_row_index(self, my_table, column_index, row_value):
-        #RETURN THE INDEX OF A ROW
-        pass
+    # Return the index of a row from a SAP table
+    def get_my_table_row_index(self, my_table, column_index, row_value:str):
+        rows = self.get_my_table_count_visible_rows(my_table)
+        for i in range(rows):
+            target = str(my_table.getCell(i, column_index).Text).strip()
+            if row_value == target:
+                return i
 
     def get_my_table_cell_value(self, my_table, column_index, index_row):
         #RETURN A TEXT WITH THE VALUE DESIRED ACCORDING TO THE COLUMN NAME AND DESIRED ROW
