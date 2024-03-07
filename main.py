@@ -12,6 +12,10 @@ if script.app.result:
     for data in all_data:
         if data.strip() != '':
             try:
-                work.cn47n(data.strip()) #PUT YOUR CODE THERE
+                result = work.co02(data.strip()) #PUT YOUR CODE THERE
+                if result != '':
+                    print(f'{data.strip()} => {result}')
+                else:
+                    print(f'{data.strip()} => Encontrada com sucesso!')
             except Exception as err:
-                print(err)
+                    print(f'{data.strip()} => {err}')

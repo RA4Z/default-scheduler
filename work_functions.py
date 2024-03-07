@@ -11,6 +11,12 @@ class Work_SAP():
         self.sap.run_actual_transaction()
         self.sap.view_in_list_form()
 
+    def co02(self,data:str):
+        self.sap.select_transaction('CO02')
+        self.sap.write_text_field('Ordem',data)
+        self.sap.run_actual_transaction()
+        return self.sap.get_footer_message()
+
 class Work():
     def __init__(self):
         pass
