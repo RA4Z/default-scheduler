@@ -17,11 +17,6 @@ if script.app.result:
     bar = progressbar.ProgressBar(max_value=len(data)-1)
     
     for i in range(len(data)):
-        actual = data[i].strip()
-        try:
-            result = work.co02(actual)
-        except Exception as err:
-                print(f'{actual} => {err}')
         bar.update(i)
 
     #SEND AN EXECUTION LOG TO A DATABASE
