@@ -1,6 +1,7 @@
 import tkinter as tk
 import getpass
 from tkinter import messagebox
+from interface.frm_history import History
 
 class Application(tk.Tk):
     def __init__(self, automation_name, automation_description, automation_developer, automation_requester):
@@ -19,6 +20,7 @@ class Application(tk.Tk):
     # Declare the components styles
     def components_styles(self):
         self.title_label = tk.Label(self, text=f"Welcome to {self.automation_name}, {getpass.getuser().upper()}", font=("Helvetica", 18, "bold"), wraplength=800)
+        self.exec_history = tk.Button(self, text="View Exec History", font=("Helvetica", 15, "bold"), command=self.exec_hist)
         self.run_button = tk.Button(self, text="Run Automation", font=("Helvetica", 15, "bold"), command=self.run_script)
         self.subtitle_label = tk.Label(self, text="Example of a Data Column", font=("Helvetica", 12, "bold"), wraplength=250)
         self.text_field = tk.Text(self, height=30, width=25)
@@ -28,12 +30,18 @@ class Application(tk.Tk):
     # Put the components into the Application interface
     def components_position(self):
         self.title_label.place(relx=0.5, rely=0.05, anchor="center")
+        self.exec_history.place(relx=0.70, rely=0.90, anchor="se")
         self.run_button.place(relx=0.90, rely=0.90, anchor="se")
         self.subtitle_label.place(relx=0.1, rely=0.1)
         self.text_field.place(relx=0.1, rely=0.15)
         self.automation_label.place(relx=0.4, rely=0.15)
         self.automation_credits.pack(pady=5, side="bottom")
         
+    def exec_hist(self):
+        hist = History(self.automation_name, self.automation_developer, self.automation_requester)
+        hist.mainloop()
+        pass
+
     def run_script(self):
         self.option_selected = messagebox.askquestion(title='Run Automation', message='Are you sure you want to run this Automation?')
         if self.option_selected == 'yes':

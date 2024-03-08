@@ -7,14 +7,7 @@ config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config/
 sys.path.append(config_dir)
 from firebase import Firebase
 
-fire = Firebase()
-datas = fire.get_realtime()
-executions = 'Active user executions...\n'
-for data in datas:
-    if datas[data]['nomeUser'] == getpass.getuser().upper():
-        executions = f"{executions}{datas[data]['quantidade']} items, executed in {datas[data]['horaExec']}\n"
-
-class Application(tk.Tk):
+class History(tk.Tk):
     def __init__(self, automation_name, automation_developer, automation_requester):
         super().__init__()
         self.automation_name = automation_name
@@ -23,6 +16,13 @@ class Application(tk.Tk):
         self.title(self.automation_name)
         self.geometry("500x500")
         self.result = False
+
+        fire = Firebase()
+        datas = fire.get_realtime()
+        self.executions = 'Active user executions...\n'
+        for data in datas:
+            if datas[data]['nomeUser'] == getpass.getuser().upper():
+                self.executions = f"{self.executions}{datas[data]['quantidade']} items, executed in {datas[data]['horaExec']}\n"
 
         self.components_styles()
         self.components_position()
@@ -45,10 +45,10 @@ class Application(tk.Tk):
         self.text_scroll.pack(side="right", fill="y")
         self.text_field.pack(side="left", fill="both", expand=True)
         self.text_scroll.config(command=self.text_field.yview)
-        self.text_field.insert("1.0", executions)
+        self.text_field.insert("1.0", self.executions)
 
         self.automation_credits.pack(pady=5, side="bottom")
 
 if __name__ == "__main__":
-    app = Application('Python Default Script','Robert Aron Zimmermann','Robert Aron Zimmermann')
+    app = History('Python Default Script','Robert Aron Zimmermann','Robert Aron Zimmermann')
     app.mainloop()
