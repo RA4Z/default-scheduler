@@ -24,6 +24,7 @@ if script.app.result:
                 print(f'{actual} => {err}')
         bar.update(i)
 
+    #SEND AN EXECUTION LOG TO A DATABASE
     try:
         end_time = time.time()
         elapsed_time_seconds = end_time - start_time
