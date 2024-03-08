@@ -9,5 +9,6 @@ sap_window = 0
 
 class State():
     def __init__(self):
+        self.app_name = app_name
         self.sap = SAP(sap_window)
         self.app = Application(app_name,app_description,app_developer,app_requester)
