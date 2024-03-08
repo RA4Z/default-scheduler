@@ -263,7 +263,7 @@ class SAP():
     # Selects a transaction within the SAP session.
     def select_transaction(self, transaction):
         self.session.startTransaction(transaction)
-        if self.session.activeWindow.name == 'wnd[1]':
+        if self.session.activeWindow.name == 'wnd[1]' and 'CN' in transaction:
             self.session.findById("wnd[1]/usr/ctxtTCNT-PROF_DB").Text = "000000000001"
             self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
         if not self.session.info.transaction == transaction:
@@ -291,6 +291,7 @@ class SAP():
 
     # Run the active transaction in the SAP screen
     def run_actual_transaction(self):
+        self.window = self.__active_window()
         screen_title = self.session.activeWindow.text
         self.session.findById(f'wnd[{self.window}]').sendVKey(0)
         try:

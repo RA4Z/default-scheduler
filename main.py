@@ -1,7 +1,6 @@
 from statements import State
 from work_functions import Work_SAP
 import progressbar
-import time
 
 script = State()
 work = Work_SAP(script.sap)
