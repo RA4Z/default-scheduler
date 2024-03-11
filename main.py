@@ -22,9 +22,12 @@ if script.app.result:
             
     bar = progressbar.ProgressBar(max_value=len(colunas[script.app.data[0]['column_name']])-1)
 
+    # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
     for i in range(len(colunas[script.app.data[0]['column_name']])):
         bar.update(i)
-        print(f"Valor Coluna 1 = {colunas['Column 1'][i]}; Valor Coluna 2 = {colunas['Column 2'][i]}; Valor Coluna 3 = {colunas['Column 3'][i]}")
+        print(f"Value Column 1 = {colunas['Column 1'][i]}; Value Column 2 = {colunas['Column 2'][i]}; Value Column 3 = {colunas['Column 3'][i]}")
+    # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
+
 
     #SEND AN EXECUTION LOG TO A DATABASE
     try:

@@ -5,7 +5,7 @@ app_name = 'Python Default Script'
 app_description = 'Graphical interface model developed in Tkinter by Robert Aron Zimmermann, an interface was developed to be used as a basis in the development of other automations that are interactive with SAP, the entire algorithm was developed in Python with the intention of facilitating interaction between Developer/ SAP, thus developing high quality automation in a short period of time with several error treatments. Doubts or Suggestions contact Robert Aron Zimmermann robertn@weg.net'
 app_developer = 'Robert Aron Zimmermann'
 app_requester = 'Robert Aron Zimmermann'
-app_columns = ['Column 1', 'Column 2', 'Column 3']
+app_columns = ['Column 1','Column 2','Column 3']
 sap_window = 0
 
 class State():

@@ -12,7 +12,6 @@ class Application(tk.Tk):
         self.automation_requester = automation_requester
         self.columns = columns
         self.title(self.automation_name)
-        self.geometry("1000x750")
         self.result = False
 
         self.components_styles()
@@ -21,8 +20,9 @@ class Application(tk.Tk):
     # Declare the components styles
     def components_styles(self):
         self.title_label = tk.Label(self, text=f"Welcome to {self.automation_name}, {getpass.getuser().upper()}", font=("Helvetica", 18, "bold"), wraplength=800)
-        self.exec_history = tk.Button(self, text="View Exec History", font=("Helvetica", 15, "bold"), command=self.exec_hist)
-        self.run_button = tk.Button(self, text="Run Automation", font=("Helvetica", 15, "bold"), command=self.run_script)
+        self.buttons_frame = tk.Frame(self)
+        self.exec_history = tk.Button(self.buttons_frame, text="View Exec History", font=("Helvetica", 15, "bold"), command=self.exec_hist)
+        self.run_button = tk.Button(self.buttons_frame, text="Run Automation", font=("Helvetica", 15, "bold"), command=self.run_script)
         self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 14))
         self.automation_credits = tk.Label(self, text=f'{self.automation_name}, requested by {self.automation_requester} and developed by {self.automation_developer}', wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
         self.columns_frame = tk.Frame(self)
@@ -31,8 +31,9 @@ class Application(tk.Tk):
     def components_position(self):
         self.automation_credits.pack(side="bottom",pady=5)
         self.title_label.place(relx=0.5, rely=0.05, anchor="center")
-        self.exec_history.place(relx=0.70, rely=0.90, anchor="se")
-        self.run_button.place(relx=0.90, rely=0.90, anchor="se")
+        self.buttons_frame.pack(side='bottom',pady=25)
+        self.exec_history.pack(side='left',padx=10)
+        self.run_button.pack(side='left',padx=10)
         
         self.columns_frame.pack(side="left",pady=100)
         self.data = []
