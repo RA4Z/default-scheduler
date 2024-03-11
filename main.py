@@ -13,11 +13,18 @@ script.app.mainloop()
 
 if script.app.result:
     start_time = time.time()
-    data = str(script.app.data).split('\n')
-    bar = progressbar.ProgressBar(max_value=len(data)-1)
-    
-    for i in range(len(data)):
+    colunas = {}
+
+    for item in script.app.data:
+        colunas[item['column_name']] = str(item['text']).split('\n')[:-1]
+        while len(colunas[item['column_name']]) < len(colunas[script.app.data[0]['column_name']]):
+            colunas[item['column_name']].append('')
+            
+    bar = progressbar.ProgressBar(max_value=len(colunas[script.app.data[0]['column_name']])-1)
+
+    for i in range(len(colunas[script.app.data[0]['column_name']])):
         bar.update(i)
+        print(f"Valor Coluna 1 = {colunas['Column 1'][i]}; Valor Coluna 2 = {colunas['Column 2'][i]}; Valor Coluna 3 = {colunas['Column 3'][i]}")
 
     #SEND AN EXECUTION LOG TO A DATABASE
     try:
