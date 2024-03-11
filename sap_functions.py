@@ -261,7 +261,7 @@ class SAP():
         return False
 
     # Selects a transaction within the SAP session.
-    def select_transaction(self, transaction):
+    def select_transaction(self, transaction:str):
         self.session.startTransaction(transaction)
         if self.session.activeWindow.name == 'wnd[1]' and 'CN' in transaction:
             self.session.findById("wnd[1]/usr/ctxtTCNT-PROF_DB").Text = "000000000001"
@@ -300,7 +300,7 @@ class SAP():
             pass
 
     # Inserts a variant into the SAP session.
-    def insert_variant(self, variant_name):
+    def insert_variant(self, variant_name:str):
         try:
             self.session.findById("wnd[0]/tbar[1]/btn[17]").press()
             if self.session.activeWindow.name == 'wnd[1]':
@@ -313,7 +313,7 @@ class SAP():
             print(f'The error {e} has happenned!')
 
     # Changes the active tab within the SAP session.
-    def change_active_tab(self, selected_tab):
+    def change_active_tab(self, selected_tab:int):
         self.window = self.__active_window()
         area = self.__scroll_through_tabs(self.session.findById(f"wnd[{self.window}]/usr"), f"wnd[{self.window}]/usr", selected_tab)
         try:
@@ -323,7 +323,7 @@ class SAP():
         return
     
     # Writes text into a text field within the SAP session.
-    def write_text_field(self, field_name, desired_text, target_index=0, selected_tab=0):
+    def write_text_field(self, field_name:str, desired_text:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.desired_text = desired_text
@@ -332,7 +332,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field', selected_tab)
 
     # Writes text into a text field until a certain index within the SAP session.
-    def write_text_field_until(self, field_name, desired_text, target_index=0, selected_tab=0):
+    def write_text_field_until(self, field_name:str, desired_text:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.desired_text = desired_text
@@ -341,7 +341,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'write_text_field_until', selected_tab)
 
     # Choose an option inside a SAP combo box 
-    def choose_text_combo(self, field_name, desired_text, target_index=0, selected_tab=0):
+    def choose_text_combo(self, field_name:str, desired_text:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.desired_text = desired_text
@@ -350,7 +350,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'choose_text_combo', selected_tab)
 
     # Flags a field within the SAP session.
-    def flag_field(self, field_name, desired_operator: bool, target_index=0, selected_tab=0):
+    def flag_field(self, field_name:str, desired_operator: bool, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.desired_operator = desired_operator
@@ -359,7 +359,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'flag_field', selected_tab)
 
     # Selects an option within a field in the SAP session.
-    def option_field(self, field_name, target_index=0, selected_tab=0):
+    def option_field(self, field_name:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.target_index = target_index
@@ -367,7 +367,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'option_field', selected_tab)
     
     # Presses a button within the SAP session.
-    def press_button(self, field_name, target_index=0, selected_tab=0):
+    def press_button(self, field_name:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.target_index = target_index
@@ -375,14 +375,14 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]", 'press_button', selected_tab)
     
     # Finds a text field within the SAP session.
-    def find_text_field(self, field_name, selected_tab = 0):
+    def find_text_field(self, field_name:str, selected_tab = 0):
         self.window = self.__active_window()
         self.field_name = field_name
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'find_text_field', selected_tab)
     
     # Selects multiple entries within a field in the SAP session.
-    def multiple_selection_field(self, field_name, target_index=0, selected_tab=0):
+    def multiple_selection_field(self, field_name:str, target_index=0, selected_tab=0):
         self.window = self.__active_window()
         self.field_name = field_name
         self.target_index = target_index
@@ -390,7 +390,7 @@ class SAP():
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'multiple_selection_field', selected_tab)
 
     # Pastes data into multiple selection fields in the SAP session.
-    def multiple_selection_paste_data(self, data):
+    def multiple_selection_paste_data(self, data:str):
         try:
             with open('temp_paste.txt', 'w') as arquivo:
                 arquivo.write(data)
@@ -405,7 +405,7 @@ class SAP():
             print(f'The error {e} has happenned!')
 
     # Navigate around the menu in the SAP header
-    def navigate_into_menu_header(self, path):
+    def navigate_into_menu_header(self, path:str):
         try:
             id_path = 'wnd[0]/mbar'
             if ';' not in path:
@@ -426,7 +426,7 @@ class SAP():
             print(f'The error {e} has happenned!')
 
     # Saves a file in the SAP session.
-    def save_file(self, file_name, path, option=0, type_of_file='txt'):
+    def save_file(self, file_name:str, path:str, option=0, type_of_file='txt'):
         if 'xls' in type_of_file:
             self.session.findById("wnd[0]/mbar/menu[0]/menu[1]/menu[1]").Select()
             self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
@@ -451,7 +451,7 @@ class SAP():
         return self.__scroll_through_table(f'wnd[{self.window}]/usr')
         
     # Retrieves a value from a cell
-    def my_table_get_cell_value(self, my_table, row_index, column_index):
+    def my_table_get_cell_value(self, my_table, row_index:int, column_index:int):
         try:
             return my_table.getCell(row_index,column_index).Text
         except:
