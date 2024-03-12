@@ -48,7 +48,7 @@ class Application(tk.Tk):
 
         self.automation_label.pack(pady=120, padx=50)
         self.update_idletasks()
-        self.geometry(f"{self.winfo_reqwidth()}x{self.winfo_reqheight()}")
+        self.geometry(f"{self.winfo_reqwidth() + 50}x{self.winfo_reqheight() + 50}")
 
     def exec_hist(self):
         hist = History(self.automation_name, self.automation_developer, self.automation_requester)
