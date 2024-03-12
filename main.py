@@ -1,4 +1,5 @@
 from datetime import timedelta
+from tkinter import messagebox
 import time
 from statements import State
 from work_functions import Work_SAP
@@ -28,7 +29,6 @@ if script.app.result:
         print(f"Value Column 1 = {colunas['Column 1'][i]}; Value Column 2 = {colunas['Column 2'][i]}; Value Column 3 = {colunas['Column 3'][i]}")
     # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
 
-
     #SEND AN EXECUTION LOG TO A DATABASE
     try:
         end_time = time.time()
@@ -37,3 +37,5 @@ if script.app.result:
         data_base.post_realtime(script.app_name,str(elapsed_time),i)
     except:
          pass
+    
+    messagebox.showinfo('Algorithm Execution','Automation was executed successfully!')
