@@ -21,7 +21,7 @@ class History(tk.Tk):
         datas = fire.get_realtime()
         self.executions = 'Active user executions...\n'
         for data in datas:
-            if datas[data]['nomeUser'] == getpass.getuser().upper():
+            if datas[data]['nomeUser'] == getpass.getuser().upper() and datas[data]['nomeAlgoritmo'] == self.automation_name:
                 self.executions = f"{self.executions}{datas[data]['quantidade']} items, executed in {datas[data]['horaExec']}\n"
 
         self.components_styles()
