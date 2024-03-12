@@ -23,3 +23,20 @@ class Firebase():
     def get_realtime(self, script_name:str):
         self.requisition = requests.get(f'{self.link}/Algoritmos/{script_name}/{getpass.getuser().upper()}/.json', verify=False).json()
         return self.requisition
+
+    # GET ALL THE LOGS INSIDE THE DATABASE
+    def get_mid_time(self, script_name:str, desired_total:int):
+        record = requests.get(f'{self.link}/Algoritmos/{script_name}/.json', verify=False).json()
+        if record != None:
+            for user in record:
+                for id in record[user]:
+                    time = datetime.datetime.strptime(record[user][id]['duracao'],"%H:%M:%S.%f").time()
+                    quantity = record[user][id]['quantidade']
+
+                    total_seconds = (time.hour * 3600) + (time.minute * 60) + time.second + (time.microsecond / 1000000)
+                    result_seconds = (total_seconds / quantity) * desired_total
+                    resultado_timedelta = datetime.timedelta(seconds=result_seconds)
+                    resultado_datetime = datetime.datetime.min + resultado_timedelta
+                    media_unit = resultado_datetime.time()
+                    self.requisition = media_unit
+                    return self.requisition

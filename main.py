@@ -30,7 +30,8 @@ if script.app.result:
     # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
     for i in range(len(colunas[script.app.data[0]['column_name']])):
         bar.update(i)
-        print(f"Value Column 1 = {colunas['Column 1'][i]}; Value Column 2 = {colunas['Column 2'][i]}; Value Column 3 = {colunas['Column 3'][i]}")
+        time.sleep(3)
+        #print(f"Value Column 1 = {colunas['Column 1'][i]}; Value Column 2 = {colunas['Column 2'][i]}; Value Column 3 = {colunas['Column 3'][i]}")
     # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
 
     #SEND AN EXECUTION LOG TO A DATABASE
@@ -38,7 +39,7 @@ if script.app.result:
         end_time = time.time()
         elapsed_time_seconds = end_time - start_time
         elapsed_time = timedelta(seconds=elapsed_time_seconds)
-        data_base.post_realtime(script.app_name,str(elapsed_time),i)
+        data_base.post_realtime(script.app_name,str(elapsed_time),i+1)
     except:
          pass
     

@@ -1,6 +1,13 @@
 import tkinter as tk
 import getpass
 from tkinter import messagebox
+
+import sys
+import os
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config/'))
+sys.path.append(config_dir)
+from firebase import Firebase
+
 if __name__ != "__main__": from interface.frm_history import History
 
 class Application(tk.Tk):
@@ -13,6 +20,7 @@ class Application(tk.Tk):
         self.columns = columns
         self.title(self.automation_name)
         self.result = False
+        self.firebase = Firebase()
 
         self.components_styles()
         self.components_position()
@@ -56,6 +64,9 @@ class Application(tk.Tk):
         pass
 
     def run_script(self):
+        desired_rows = len(str(self.data[0]['text'].get("1.0", tk.END)).split('\n')[:-1])
+        print(desired_rows)
+        #mid_time = self.firebase.get_mid_time('')
         self.option_selected = messagebox.askquestion(title='Run Automation', message='Are you sure you want to run this Automation?')
         if self.option_selected == 'yes':
             for i in range(len(self.data)):
