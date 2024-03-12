@@ -2,7 +2,9 @@ import requests
 import json
 import getpass
 import datetime
+import urllib3
 
+urllib3.disable_warnings()
 class Firebase():
     def __init__(self):
         self.link = 'https://default-python-default-rtdb.firebaseio.com/'
