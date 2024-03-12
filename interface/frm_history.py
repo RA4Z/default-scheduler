@@ -1,6 +1,7 @@
 import tkinter as tk
 import getpass
 from tkinter import Scrollbar
+from tkinter import messagebox
 import sys
 import os
 config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config/'))
@@ -18,14 +19,18 @@ class History(tk.Tk):
         self.result = False
 
         fire = Firebase()
-        datas = fire.get_realtime()
-        self.executions = 'Active user executions...\n'
-        for data in datas:
-            if datas[data]['nomeUser'] == getpass.getuser().upper() and datas[data]['nomeAlgoritmo'] == self.automation_name:
+        datas = fire.get_realtime(self.automation_name)
+
+        if datas == None:
+            messagebox.showinfo(title='Run Automation', message='There is no execution history for the active user!')
+            self.destroy()
+        else:
+            self.executions = 'Active user executions...\n'
+            for data in datas:
                 self.executions = f"{self.executions}{datas[data]['quantidade']} items, executed in {datas[data]['horaExec']}\n"
 
-        self.components_styles()
-        self.components_position()
+            self.components_styles()
+            self.components_position()
     
     # Declare the components styles
     def components_styles(self):
