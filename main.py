@@ -4,10 +4,14 @@ import time
 from statements import State
 from work_functions import Work_SAP
 from config.firebase import Firebase
+from excel import ExcelHandler
+from outlook import Outlook
 import progressbar
 
 script = State()
 work = Work_SAP(script.sap)
+sheet_excel = ExcelHandler('')
+mail_outlook = Outlook()
 data_base = Firebase()
 
 script.app.mainloop()

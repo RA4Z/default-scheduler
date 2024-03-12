@@ -22,7 +22,7 @@ class History(tk.Tk):
         datas = fire.get_realtime(self.automation_name)
 
         if datas == None:
-            messagebox.showinfo(title='Run Automation', message='There is no execution history for the active user!')
+            messagebox.showinfo(title='Run Automation', message='There is no execution history for the active user in the actual Algorithm!')
             self.destroy()
         else:
             self.executions = 'Active user executions...\n'
