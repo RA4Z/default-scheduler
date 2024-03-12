@@ -258,6 +258,16 @@ class SAP():
                         print(f'The error {e} has happenned!')
                     return
 
+        if objective == 'get_text_at_side':
+            if children(index).Text == self.field_name:
+                if self.target_index == 0:
+                    try:
+                        self.found_text = children(index + self.side_index).Text
+                        return True
+                    except Exception as e:
+                        print(f'The error {e} has happenned!')
+                    return
+                
         return False
 
     # Selects a transaction within the SAP session.
@@ -380,6 +390,16 @@ class SAP():
         self.field_name = field_name
         if selected_tab > 0: self.change_active_tab(selected_tab)
         return self.__scroll_through_fields(f"wnd[{self.window}]/usr", 'find_text_field', selected_tab)
+    
+    # Get the text that is at the side of the field_name.
+    def get_text_at_side(self, field_name, side_index:int, target_index=0, selected_tab=0):
+        self.window = self.__active_window()
+        self.field_name = field_name
+        self.target_index = target_index
+        self.side_index = side_index
+        if selected_tab > 0: self.change_active_tab(selected_tab)
+        if self.__scroll_through_fields(f"wnd[{self.window}]", 'get_text_at_side', selected_tab):
+            return self.found_text
     
     # Selects multiple entries within a field in the SAP session.
     def multiple_selection_field(self, field_name:str, target_index=0, selected_tab=0):
