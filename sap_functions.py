@@ -412,15 +412,15 @@ class SAP():
     # Pastes data into multiple selection fields in the SAP session.
     def multiple_selection_paste_data(self, data:str):
         try:
-            with open('temp_paste.txt', 'w') as arquivo:
+            with open('C:/Temp/temp_paste.txt', 'w') as arquivo:
                 arquivo.write(data)
             self.session.findById("wnd[1]/tbar[0]/btn[23]").press()
-            self.session.findById("wnd[2]/usr/ctxtDY_PATH").text = os.getcwd()
+            self.session.findById("wnd[2]/usr/ctxtDY_PATH").text = 'C:/Temp'
             self.session.findById("wnd[2]/usr/ctxtDY_FILENAME").text = "temp_paste.txt"
             self.session.findById("wnd[2]/tbar[0]/btn[0]").press()
             self.session.findById("wnd[1]/tbar[0]/btn[8]").press()
-            if os.path.exists('temp_paste.txt'):
-                os.remove('temp_paste.txt')
+            if os.path.exists('C:/Temp/temp_paste.txt'):
+                os.remove('C:/Temp/temp_paste.txt')
         except Exception as e:
             print(f'The error {e} has happenned!')
 
