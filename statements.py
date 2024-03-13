@@ -6,11 +6,13 @@ app_description = 'Graphical interface model developed in Tkinter by Robert Aron
 app_developer = 'Robert Aron Zimmermann'
 app_requester = 'Robert Aron Zimmermann'
 app_columns = ['Column 1','Column 2','Column 3']
+scheduled_execution = {'scheduled?':False, 'username':'robertn', 'password':'4@@2oitonove22', 'principal':'100'}
 sap_window = 0
 
 class State():
     def __init__(self):
         self.app_columns = app_columns
+        self.scheduled_execution = scheduled_execution
         self.app_name = app_name
-        self.sap = SAP(sap_window)
+        self.sap = SAP(sap_window, scheduled_execution)
         self.app = Application(app_name,app_description,app_developer,app_requester,app_columns)

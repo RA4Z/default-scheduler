@@ -3,6 +3,8 @@ from tkinter import messagebox
 import re
 import os
 import time
+import subprocess
+import pyautogui
 
 #SAP Scripting Documentation:
 #https://help.sap.com/docs/sap_gui_for_windows/b47d018c3b9b45e897faf66a6c0885a8/a2e9357389334dc89eecc1fb13999ee3.html
@@ -11,7 +13,9 @@ import time
 class SAP():
     
     # Initializes the SAP object with a specified window index.
-    def __init__(self, window: int, language='PT'):
+    def __init__(self, window: int, scheduled_execution, language='PT'):
+        self.scheduled_execution = scheduled_execution
+        self.language = language
         self.connection = self.__verify_sap_open()
         
         if self.connection.Children(0).info.user == '':
@@ -35,8 +39,34 @@ class SAP():
             application = sapguiauto.GetScriptingEngine
             return application.Children(0)
         except:
-            messagebox.showerror(title='SAP is not open!',message='SAP must be open to run this script! Please, open it and try to run again.')
-            exit()
+            if self.scheduled_execution['scheduled?']:
+                return self.__open_sap()
+            else:
+                messagebox.showerror(title='SAP is not open!',message='SAP must be open to run this script! Please, open it and try to run again.')
+                exit()
+
+    def __open_sap(self):
+            path = "C:/Program Files (x86)/SAP/FrontEnd/SapGui/saplgpad.exe"
+            subprocess.Popen(path)
+            while not pyautogui.getActiveWindowTitle().startswith("SAP Logon"):
+                time.sleep(1)
+
+            sapguiauto = win32com.client.GetObject('SAPGUI')
+            application = sapguiauto.GetScriptingEngine
+            connection = application.OpenConnection("EP0 - ECC Produção", True)
+            session = connection.Children(0)
+            session.findById("wnd[0]").maximize
+            session.findById("wnd[0]/usr/txtRSYST-MANDT").Text = self.scheduled_execution['principal']
+            session.findById("wnd[0]/usr/txtRSYST-BNAME").Text = self.scheduled_execution['username']
+            session.findById("wnd[0]/usr/pwdRSYST-BCODE").Text = self.scheduled_execution['password']
+            session.findById("wnd[0]/usr/txtRSYST-LANGU").text = self.language
+            session.findById("wnd[0]").sendVKey(0)
+
+            if session.activewindow.name == 'wnd[1]':
+                session.findById("wnd[1]/usr/radMULTI_LOGON_OPT1").Select
+                session.findById("wnd[1]/tbar[0]/btn[0]").press()
+                
+            return application.Children(0)
 
     # Count the number of open SAP screens 
     def __count_sap_screens(self, window: int):
