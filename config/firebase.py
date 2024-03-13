@@ -28,17 +28,19 @@ class Firebase():
     def get_mid_time(self, script_name:str, desired_total:int):
         record = requests.get(f'{self.link}/Algoritmos/{script_name}/.json', verify=False).json()
         if record != None:
+            quantity = 0
+            total_seconds = 0
             for user in record:
                 for id in record[user]:
                     time = datetime.datetime.strptime(record[user][id]['duracao'],"%H:%M:%S.%f").time()
-                    quantity = record[user][id]['quantidade']
+                    quantity = quantity + record[user][id]['quantidade']
+                    total_seconds = total_seconds + (time.hour * 3600) + (time.minute * 60) + time.second + (time.microsecond / 1000000)
 
-                    total_seconds = (time.hour * 3600) + (time.minute * 60) + time.second + (time.microsecond / 1000000)
-                    result_seconds = (total_seconds / quantity) * desired_total
-                    resultado_timedelta = datetime.timedelta(seconds=result_seconds)
-                    resultado_datetime = datetime.datetime.min + resultado_timedelta
-                    media_unit = resultado_datetime.time()
-                    self.requisition = str(media_unit).split('.')[0]
-                    return self.requisition
+                result_seconds = (total_seconds / quantity) * desired_total
+                resultado_timedelta = datetime.timedelta(seconds=result_seconds)
+                resultado_datetime = datetime.datetime.min + resultado_timedelta
+                media_unit = resultado_datetime.time()
+                self.requisition = str(media_unit).split('.')[0]
+                return self.requisition
         else:
             return None
