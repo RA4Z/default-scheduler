@@ -36,11 +36,11 @@ class Firebase():
                     quantity = quantity + record[user][id]['quantidade']
                     total_seconds = total_seconds + (time.hour * 3600) + (time.minute * 60) + time.second + (time.microsecond / 1000000)
 
-                result_seconds = (total_seconds / quantity) * desired_total
-                resultado_timedelta = datetime.timedelta(seconds=result_seconds)
-                resultado_datetime = datetime.datetime.min + resultado_timedelta
-                media_unit = resultado_datetime.time()
-                self.requisition = str(media_unit).split('.')[0]
-                return self.requisition
+            result_seconds = (total_seconds / quantity) * desired_total
+            resultado_timedelta = datetime.timedelta(seconds=result_seconds)
+            resultado_datetime = datetime.datetime.min + resultado_timedelta
+            media_unit = resultado_datetime.time()
+            self.requisition = str(media_unit).split('.')[0]
+            return self.requisition
         else:
             return None
