@@ -13,34 +13,41 @@ work = Work_SAP(script.sap)
 sheet_excel = ExcelHandler('')
 mail_outlook = Outlook()
 data_base = Firebase()
+i = 0
 
-script.app.mainloop()
+if not script.scheduled_execution['scheduled?']: script.app.mainloop()
 
-if script.app.result:
+if script.app.result or script.scheduled_execution['scheduled?']:
     start_time = time.time()
-    colunas = {}
 
-    for item in script.app.data:
-        colunas[item['column_name']] = str(item['text']).split('\n')[:-1]
-        while len(colunas[item['column_name']]) < len(colunas[script.app.data[0]['column_name']]):
-            colunas[item['column_name']].append('')
+    if not script.scheduled_execution['scheduled?']:
+        colunas = {}
+        for item in script.app.data:
+            colunas[item['column_name']] = str(item['text']).split('\n')[:-1]
+            while len(colunas[item['column_name']]) < len(colunas[script.app.data[0]['column_name']]):
+                colunas[item['column_name']].append('')
+                
+        bar = progressbar.ProgressBar(max_value=len(colunas[script.app.data[0]['column_name']])-1)
+
+        # - - - - - - - - - - - - - - - - - - - WRITE YOUR UNSCHEDULED CODE THERE - - - - - - - - - - - - - - - - - - - #
+        for i in range(len(colunas[script.app.data[0]['column_name']])):
+            bar.update(i)
+            time.sleep(3)
+        # - - - - - - - - - - - - - - - - - - - WRITE YOUR UNSCHEDULED CODE THERE - - - - - - - - - - - - - - - - - - - #
             
-    bar = progressbar.ProgressBar(max_value=len(colunas[script.app.data[0]['column_name']])-1)
+    else:
+        # - - - - - - - - - - - - - - - - - - - WRITE YOUR SCHEDULED CODE THERE - - - - - - - - - - - - - - - - - - - #
+        time.sleep(5.571)
+        # - - - - - - - - - - - - - - - - - - - WRITE YOUR SCHEDULED CODE THERE - - - - - - - - - - - - - - - - - - - #
 
-    # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
-    for i in range(len(colunas[script.app.data[0]['column_name']])):
-        bar.update(i)
-        time.sleep(3)
-        #print(f"Value Column 1 = {colunas['Column 1'][i]}; Value Column 2 = {colunas['Column 2'][i]}; Value Column 3 = {colunas['Column 3'][i]}")
-    # - - - - - - - - - - - - - - - - - - - WRITE YOUR CODE THERE - - - - - - - - - - - - - - - - - - - #
 
     #SEND AN EXECUTION LOG TO A DATABASE
     try:
         end_time = time.time()
         elapsed_time_seconds = end_time - start_time
         elapsed_time = timedelta(seconds=elapsed_time_seconds)
-        data_base.post_realtime(script.app_name,str(elapsed_time),i+1)
+        data_base.post_realtime(script.app_name,str(elapsed_time),i + 1)
     except:
          pass
     
-    messagebox.showinfo('Algorithm Execution','Automation was executed successfully!')
+    if not script.scheduled_execution['scheduled?']: messagebox.showinfo('Algorithm Execution','Automation was executed successfully!')

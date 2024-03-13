@@ -15,4 +15,4 @@ class State():
         self.scheduled_execution = scheduled_execution
         self.app_name = app_name
         self.sap = SAP(sap_window, scheduled_execution)
-        self.app = Application(app_name,app_description,app_developer,app_requester,app_columns)
+        if self.scheduled_execution['scheduled?']: self.app = Application(app_name,app_description,app_developer,app_requester,app_columns)
