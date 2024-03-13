@@ -38,5 +38,7 @@ class Firebase():
                     resultado_timedelta = datetime.timedelta(seconds=result_seconds)
                     resultado_datetime = datetime.datetime.min + resultado_timedelta
                     media_unit = resultado_datetime.time()
-                    self.requisition = media_unit
+                    self.requisition = str(media_unit).split('.')[0]
                     return self.requisition
+        else:
+            return None

@@ -27,7 +27,7 @@ class History(tk.Tk):
         else:
             self.executions = 'Active user executions...\n'
             for data in datas:
-                self.executions = f"{self.executions}{datas[data]['quantidade']} items, executed in {datas[data]['horaExec']}\n"
+                self.executions = f"{self.executions}{datas[data]['quantidade']} items, executed in {str(datas[data]['horaExec']).split('.')[0]}\n"
 
             self.components_styles()
             self.components_position()

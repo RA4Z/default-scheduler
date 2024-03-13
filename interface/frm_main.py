@@ -64,10 +64,21 @@ class Application(tk.Tk):
         pass
 
     def run_script(self):
-        desired_rows = len(str(self.data[0]['text'].get("1.0", tk.END)).split('\n')[:-1])
-        print(desired_rows)
-        #mid_time = self.firebase.get_mid_time('')
-        self.option_selected = messagebox.askquestion(title='Run Automation', message='Are you sure you want to run this Automation?')
+        if self.columns != []:
+            if str(self.data[0]['text'].get("1.0", tk.END)).strip() == '':
+                messagebox.showerror('Empty Data','There are no data in the fields!')
+                return
+            desired_rows = len(str(self.data[0]['text'].get("1.0", tk.END)).split('\n')[:-1])
+        else:
+            desired_rows = 1
+        mid_time = self.firebase.get_mid_time(self.automation_name,desired_rows)
+
+        if mid_time != None: 
+            text_mid = f'It will take aproximately {mid_time}'
+        else:
+            text_mid = ''
+
+        self.option_selected = messagebox.askquestion(title='Run Automation', message=f'Are you sure you want to run this Automation? {text_mid}')
         if self.option_selected == 'yes':
             for i in range(len(self.data)):
                 self.data[i]['text'] = self.data[i]['text'].get("1.0", tk.END)
