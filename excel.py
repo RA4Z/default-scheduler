@@ -74,3 +74,12 @@ class ExcelHandler:
         if count == 0:
             print(f"The column '{wanted_text}' was not found!")
             return None
+        
+    def sap_write_my_grid(self, my_grid, total_grid_rows:int, start_row:int, start_column:int):
+        grid_column = my_grid.ColumnOrder
+        rows = total_grid_rows
+        cols = my_grid.ColumnCount - 1
+        for i in range(-1,rows):
+            for c in range(cols):
+                text = my_grid.getCellValue(i,grid_column(c))
+                self.write_cell(i + start_row + 1, c + start_column, text)
