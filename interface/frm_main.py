@@ -16,6 +16,7 @@ class Application(tk.Tk):
         self.idiom = language
         self.language = Language(language)
         self.country_image = tk.PhotoImage(file=f"images/{language}.png")
+        self.logo_image = tk.PhotoImage(file=f"images/logo.png")
         self.automation_name = automation_name
         self.automation_description = automation_description
         self.automation_developer = automation_developer
@@ -38,6 +39,7 @@ class Application(tk.Tk):
         self.automation_credits = tk.Label(self, text=f"{self.automation_name}, {self.language.search('requested')} {self.automation_requester} {self.language.search('developed')} {self.automation_developer}", wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
         self.columns_frame = tk.Frame(self)
         self.image_label = tk.Label(self, image=self.country_image)
+        self.logo_label = tk.Label(self, image=self.logo_image)
 
     # Put the components into the Application interface
     def components_position(self):
@@ -46,7 +48,8 @@ class Application(tk.Tk):
         self.buttons_frame.pack(side='bottom',pady=25)
         self.exec_history.pack(side='left',padx=10)
         self.run_button.pack(side='left',padx=10)
-        self.image_label.pack(side="top", anchor="ne")
+        self.logo_label.pack(side="top", anchor="nw")
+        self.image_label.pack(side="right")
 
         self.columns_frame.pack(side="left",pady=100)
         self.data = []
