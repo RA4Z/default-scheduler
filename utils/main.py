@@ -1,6 +1,12 @@
 from datetime import timedelta
 from tkinter import messagebox
 import time
+
+import sys
+import os
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(config_dir)
+
 from services.statements import State
 from utils.work_functions import Work_SAP
 from config.firebase import Firebase
