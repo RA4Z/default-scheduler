@@ -4,9 +4,10 @@ from tkinter import messagebox
 
 import sys
 import os
-config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config/'))
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.append(config_dir)
-from firebase import Firebase
+
+from config.firebase import Firebase
 
 if __name__ != "__main__": from interface.frm_history import History
 

@@ -2,11 +2,13 @@ import tkinter as tk
 import getpass
 from tkinter import Scrollbar
 from tkinter import messagebox
+
 import sys
 import os
-config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../config/'))
+config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.append(config_dir)
-from firebase import Firebase
+
+from config.firebase import Firebase
 
 class History(tk.Tk):
     def __init__(self, automation_name, automation_developer, automation_requester):
