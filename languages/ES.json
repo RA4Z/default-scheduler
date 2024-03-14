@@ -35,9 +35,7 @@
     "sap_logon_err_title": "¡El usuario de SAP no ha iniciado sesión!",
     "sap_logon_err_body": "¡Necesitas iniciar sesión en SAP para ejecutar este script! Por favor, inicia sesión e intenta nuevamente.",
 
-    "sap_system_err_title": "¡Alerta del Sistema SAP!",
     "sap_system_err_body": "Tienes abierto SAP Quality Assurance, (SAP QA)\n¡Muchas cosas pueden no funcionar como se desea!",
-
-    "sap_language_err_title": "¡Conflicto de Idioma en SAP!",
-    "sap_language_err_body": "Tu sistema SAP actualmente no tiene seleccionado el idioma $language, pueden ocurrir muchos errores"
+    
+    "sap_language_err_body": "Tu sistema SAP actualmente no tiene seleccionado el idioma $language, ¡pueden ocurrir muchos errores!"
 }

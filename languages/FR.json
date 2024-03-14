@@ -35,9 +35,7 @@
     "sap_logon_err_title": "L'utilisateur SAP n'est pas connecté !",
     "sap_logon_err_body": "Vous devez vous connecter à SAP pour exécuter ce script ! Veuillez vous connecter et réessayer.",
 
-    "sap_system_err_title": "Alerte système SAP !",
     "sap_system_err_body": "Vous avez ouvert SAP Quality Assurance, (SAP QA)\nDe nombreuses choses peuvent ne pas se dérouler comme prévu !",
 
-    "sap_language_err_title": "Conflit de langues SAP !",
-    "sap_language_err_body": "Votre système SAP n'a actuellement pas la langue $language sélectionnée, de nombreuses erreurs peuvent survenir"
+    "sap_language_err_body": "Votre système SAP n'a actuellement pas la langue $language sélectionnée, de nombreuses erreurs peuvent survenir!"
 }

@@ -35,9 +35,7 @@
     "sap_logon_err_title": "Usuário SAP desconectado!",
     "sap_logon_err_body": "Você precisa fazer login no SAP para executar este script! Por favor, faça login e tente novamente.",
 
-    "sap_system_err_title": "Alerta de Sistema SAP!",
     "sap_system_err_body": "Você está com o SAP Quality Assurance aberto, (SAP QA)\nMuitas coisas podem não acontecer conforme desejado!",
 
-    "sap_language_err_title": "Conflito de Idioma SAP!",
-    "sap_language_err_body": "Seu sistema SAP atualmente não tem o idioma $language selecionado, muitos erros podem ocorrer"
+    "sap_language_err_body": "Seu sistema SAP atualmente não tem o idioma $language selecionado, muitos erros podem ocorrer!"
 }

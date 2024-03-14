@@ -6,7 +6,7 @@ app_description = 'Graphical interface model developed in Tkinter by Robert Aron
 app_developer = 'Robert Aron Zimmermann'
 app_requester = 'Robert Aron Zimmermann'
 app_columns = ['Column 1','Column 2','Column 3']
-default_language = 'EN'
+default_language = 'PT'
 scheduled_execution = {'scheduled?':False, 'username':'robertn', 'password':'4@@2oitonove22', 'principal':'100'}
 sap_window = 0
 

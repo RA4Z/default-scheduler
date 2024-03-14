@@ -35,9 +35,7 @@
     "sap_logon_err_title": "SAP-Benutzer ist abgemeldet!",
     "sap_logon_err_body": "Sie müssen sich bei SAP anmelden, um dieses Skript auszuführen! Bitte melden Sie sich an und versuchen Sie es erneut.",
 
-    "sap_system_err_title": "SAP-Systemalarm!",
     "sap_system_err_body": "Sie haben SAP-Qualitätssicherung geöffnet, (SAP QA)\nViele Dinge können nicht wie gewünscht funktionieren!",
 
-    "sap_language_err_title": "Sprachkonflikt in SAP!",
-    "sap_language_err_body": "Ihr SAP-System hat derzeit nicht die Sprache $language ausgewählt, es können viele Fehler auftreten"
+    "sap_language_err_body": "Ihr SAP-System hat derzeit nicht die Sprache $language ausgewählt, es können viele Fehler auftreten!"
 }

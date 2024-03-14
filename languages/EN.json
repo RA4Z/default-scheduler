@@ -35,9 +35,7 @@
     "sap_logon_err_title": "SAP user is logged out!",
     "sap_logon_err_body": "You need to log in to SAP to run this script! Please log in and try again.",
 
-    "sap_system_err_title": "SAP System Alert!",
     "sap_system_err_body": "You're with SAP Quality Assurance open, (SAP QA)\nMany things may not happen as desired!",
 
-    "sap_language_err_title": "SAP Language conflict!",
-    "sap_language_err_body": "Your SAP system currently does not have the $language language selected, many errors may occur"
+    "sap_language_err_body": "Your SAP system currently does not have the $language language selected, many errors may occur!"
 }

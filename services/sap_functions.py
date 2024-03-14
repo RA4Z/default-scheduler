@@ -14,7 +14,7 @@ from services.language_dict import Language
 class SAP():
     
     # Initializes the SAP object with a specified window index.
-    def __init__(self, window: int, scheduled_execution, language='PT'):
+    def __init__(self, window: int, scheduled_execution, language:str):
         self.scheduled_execution = scheduled_execution
         self.language = Language(language)
         self.idiom = language
@@ -25,10 +25,10 @@ class SAP():
             exit()
 
         if self.connection.Children(0).info.systemName == 'EQ0':
-            messagebox.showwarning(title=self.language.search('sap_system_err_title'),message=self.language.search('sap_system_err_body'))
+            print(self.language.search('sap_system_err_body'))
         
-        if self.connection.Children(0).info.language != language:
-            messagebox.showwarning(title=self.language.search('sap_language_err_title'),message=self.language.search('sap_language_err_body').replace('$language',language))
+        if self.connection.Children(0).info.language != self.idiom:
+            print(self.language.search('sap_language_err_body').replace('$language',self.idiom))
 
         self.__count_sap_screens(window)
         self.session = self.connection.Children(window)
