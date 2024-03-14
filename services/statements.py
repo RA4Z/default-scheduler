@@ -1,4 +1,4 @@
-from sap_functions import SAP
+from services.sap_functions import SAP
 from interface.frm_main import Application
 
 app_name = 'Python Default Script'
@@ -15,4 +15,4 @@ class State():
         self.scheduled_execution = scheduled_execution
         self.app_name = app_name
         self.sap = SAP(sap_window, scheduled_execution)
-        if self.scheduled_execution['scheduled?']: self.app = Application(app_name,app_description,app_developer,app_requester,app_columns)
+        if not self.scheduled_execution['scheduled?']: self.app = Application(app_name,app_description,app_developer,app_requester,app_columns)

@@ -1,11 +1,11 @@
 from datetime import timedelta
 from tkinter import messagebox
 import time
-from statements import State
-from work_functions import Work_SAP
+from services.statements import State
+from utils.work_functions import Work_SAP
 from config.firebase import Firebase
-from excel import ExcelHandler
-from outlook import Outlook
+from services.excel import ExcelHandler
+from services.outlook import Outlook
 import progressbar
 
 script = State()

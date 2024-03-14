@@ -1,4 +1,4 @@
-from sap_functions import SAP
+from services.sap_functions import SAP
 
 class Work_SAP():
     def __init__(self, sap:SAP):
