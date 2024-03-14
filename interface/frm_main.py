@@ -1,19 +1,19 @@
 import tkinter as tk
-import getpass
 from tkinter import messagebox
-
 import sys
 import os
 config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.append(config_dir)
 
+from services.language_dict import Language
 from config.firebase import Firebase
 
 if __name__ != "__main__": from interface.frm_history import History
 
 class Application(tk.Tk):
-    def __init__(self, automation_name, automation_description, automation_developer, automation_requester, columns):
+    def __init__(self, automation_name:str, automation_description:str, automation_developer:str, automation_requester:str, columns, language:str):
         super().__init__()
+        self.language = Language(language)
         self.automation_name = automation_name
         self.automation_description = automation_description
         self.automation_developer = automation_developer
@@ -28,12 +28,12 @@ class Application(tk.Tk):
     
     # Declare the components styles
     def components_styles(self):
-        self.title_label = tk.Label(self, text=f"Welcome to {self.automation_name}, {getpass.getuser().upper()}", font=("Helvetica", 18, "bold"), wraplength=800)
+        self.title_label = tk.Label(self, text=f"{self.language.search('greeting').replace('$automation_name',self.automation_name)}", font=("Helvetica", 18, "bold"), wraplength=800)
         self.buttons_frame = tk.Frame(self)
-        self.exec_history = tk.Button(self.buttons_frame, text="View Exec History", font=("Helvetica", 15, "bold"), command=self.exec_hist)
-        self.run_button = tk.Button(self.buttons_frame, text="Run Automation", font=("Helvetica", 15, "bold"), command=self.run_script)
+        self.exec_history = tk.Button(self.buttons_frame, text=self.language.search('exec_history'), font=("Helvetica", 15, "bold"), command=self.exec_hist)
+        self.run_button = tk.Button(self.buttons_frame, text=self.language.search('run_script'), font=("Helvetica", 15, "bold"), command=self.run_script)
         self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 14))
-        self.automation_credits = tk.Label(self, text=f'{self.automation_name}, requested by {self.automation_requester} and developed by {self.automation_developer}', wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
+        self.automation_credits = tk.Label(self, text=f"{self.automation_name}, {self.language.search('requested')} {self.automation_requester} {self.language.search('developed')} {self.automation_developer}", wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
         self.columns_frame = tk.Frame(self)
 
     # Put the components into the Application interface
@@ -67,7 +67,7 @@ class Application(tk.Tk):
     def run_script(self):
         if self.columns != []:
             if str(self.data[0]['text'].get("1.0", tk.END)).strip() == '':
-                messagebox.showerror('Empty Data','There are no data in the fields!')
+                messagebox.showerror(title=f"{self.language.search('empty_title')}",message=f"{self.language.search('empty_body')}")
                 return
             desired_rows = len(str(self.data[0]['text'].get("1.0", tk.END)).split('\n')[:-1])
         else:
@@ -75,11 +75,11 @@ class Application(tk.Tk):
         mid_time = self.firebase.get_mid_time(self.automation_name,desired_rows)
 
         if mid_time != None: 
-            text_mid = f'It will take aproximately {mid_time}'
+            text_mid = f"{self.language.search('aproximately')} {mid_time}"
         else:
             text_mid = ''
 
-        self.option_selected = messagebox.askquestion(title='Run Automation', message=f'Are you sure you want to run this Automation? {text_mid}')
+        self.option_selected = messagebox.askquestion(title=f"{self.language.search('run_script')}", message=f"{self.language.search('run_sure')} {text_mid}")
         if self.option_selected == 'yes':
             for i in range(len(self.data)):
                 self.data[i]['text'] = self.data[i]['text'].get("1.0", tk.END)
@@ -90,5 +90,5 @@ if __name__ == "__main__":
     from frm_history import History
     app = Application('Python Default Script',
                       'Graphical interface model developed in Tkinter by Robert Aron Zimmermann, an interface was developed to be used as a basis in the development of other automations that are interactive with SAP, the entire algorithm was developed in Python with the intention of facilitating interaction between Developer/ SAP, thus developing high quality automation in a short period of time with several error treatments. Doubts or Suggestions contact Robert Aron Zimmermann robertn@weg.net',
-                      'Robert Aron Zimmermann', 'Robert Aron Zimmermann', ['Test1', 'Test2', 'Test3', 'Test4'])
+                      'Robert Aron Zimmermann', 'Robert Aron Zimmermann', ['Test1', 'Test2', 'Test3', 'Test4'],'EN')
     app.mainloop()

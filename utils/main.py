@@ -7,6 +7,7 @@ import os
 config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 sys.path.append(config_dir)
 
+from services.language_dict import Language
 from services.statements import State
 from utils.work_functions import Work_SAP
 from config.firebase import Firebase
@@ -19,6 +20,7 @@ work = Work_SAP(script.sap)
 sheet_excel = ExcelHandler('')
 mail_outlook = Outlook()
 data_base = Firebase()
+language = Language(script.default_language)
 i = 0
 
 if not script.scheduled_execution['scheduled?']: script.app.mainloop()
@@ -56,4 +58,4 @@ if script.app.result or script.scheduled_execution['scheduled?']:
     except:
          pass
     
-    if not script.scheduled_execution['scheduled?']: messagebox.showinfo('Algorithm Execution','Automation was executed successfully!')
+    if not script.scheduled_execution['scheduled?']: messagebox.showinfo(language.search('end_execution_title'),language.search('end_execution_body'))

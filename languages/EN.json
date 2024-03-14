@@ -1,0 +1,25 @@
+{
+    "not_found": "Translation not found!",
+    "greeting": "Welcome to $automation_name, $username",
+
+    "requested": "requested by",
+    "developed": "and developed by",
+    "exec_history": "View Exec History",
+
+    "run_script": "Run Automation",
+    "run_sure": "Are you sure you want to run this Automation?",
+
+    "empty_title": "Empty Data",
+    "empty_body": "There are no data in the fields!",
+
+    "aproximately": "It will take aproximately",
+
+    "end_execution_title": "Algorithm Execution",
+    "end_execution_body": "Automation was executed successfully!",
+
+    "history_automation_title": "Automation History",
+    "history_automation_body": "There is no execution history for the active user in the actual Algorithm!",
+    "history_executed": "Active user executions...\n",
+    "history_executed_in": "items, executed in",
+    "history_for_user": "$automation_name run history for the user $username"
+}
