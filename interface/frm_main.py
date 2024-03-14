@@ -13,6 +13,7 @@ if __name__ != "__main__": from interface.frm_history import History
 class Application(tk.Tk):
     def __init__(self, automation_name:str, automation_description:str, automation_developer:str, automation_requester:str, columns, language:str):
         super().__init__()
+        self.idiom = language
         self.language = Language(language)
         self.automation_name = automation_name
         self.automation_description = automation_description
@@ -60,7 +61,7 @@ class Application(tk.Tk):
         self.geometry(f"{self.winfo_reqwidth() + 50}x{self.winfo_reqheight() + 50}")
 
     def exec_hist(self):
-        hist = History(self.automation_name, self.automation_developer, self.automation_requester)
+        hist = History(self.automation_name, self.automation_developer, self.automation_requester,self.idiom)
         hist.mainloop()
         pass
 
