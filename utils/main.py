@@ -13,10 +13,12 @@ from utils.work_functions import Work_SAP
 from config.firebase import Firebase
 from services.excel import ExcelHandler
 from services.outlook import Outlook
+from web.browser_selenium import SeleniumBrouser
 import progressbar
 
 script = State()
 work = Work_SAP(script.sap)
+web = SeleniumBrouser()
 sheet_excel = ExcelHandler('')
 mail_outlook = Outlook()
 data_base = Firebase()
