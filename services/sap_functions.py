@@ -518,6 +518,17 @@ class SAP():
         self.window = self.__active_window()
         return self.__scroll_through_grid(f'wnd[{self.window}]/usr')
 
+    # Select a Layout after accesses the table
+    def my_grid_select_layout(self, layout:str):
+        my_grid = self.get_my_grid()
+        my_grid.selectColumn("VARIANT")
+        my_grid.contextMenu()
+        my_grid.selectContextMenuItem("&FILTER")
+        self.session.findById("wnd[2]/usr/ssub%_SUBSCREEN_FREESEL:SAPLSSEL:1105/ctxt%%DYN001-LOW").text = layout
+        self.session.findById("wnd[2]/tbar[0]/btn[0]").press()
+        self.session.findById("wnd[1]/usr/ssubD0500_SUBSCREEN:SAPLSLVC_DIALOG:0501/cntlG51_CONTAINER/shellcont/shell").selectedRows = "0"
+        self.session.findById("wnd[1]/usr/ssubD0500_SUBSCREEN:SAPLSLVC_DIALOG:0501/cntlG51_CONTAINER/shellcont/shell").clickCurrentCell()
+
     # Count the total number of rows inside the Grid
     def get_my_grid_count_rows(self, my_grid):
         self.window = self.__active_window()
