@@ -39,7 +39,7 @@ class Application(tk.Tk):
 
         self.bottom_frame = tk.Frame(self)
         self.automation_credits = tk.Label(self.bottom_frame, text=f"{self.automation_name}, {self.language.search('requested')} {self.automation_requester} {self.language.search('developed')} {self.automation_developer}", wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
-        if self.idiom == 'PT': self.quick_tips = tk.Label(self.bottom_frame, text=self.firebase.get_tips_or_news()[self.idiom])
+        if self.idiom == 'PT': self.quick_tips = tk.Label(self.bottom_frame, text=self.firebase.get_tips_or_news()[self.idiom], wraplength=800, font=("Helvetica", 10, 'bold'))
 
         self.columns_frame = tk.Frame(self)
         self.image_label = tk.Label(self, image=self.country_image)
