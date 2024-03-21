@@ -36,14 +36,21 @@ class Application(tk.Tk):
         self.exec_history = tk.Button(self.buttons_frame, text=self.language.search('exec_history'), font=("Helvetica", 15, "bold"), command=self.exec_hist)
         self.run_button = tk.Button(self.buttons_frame, text=self.language.search('run_script'), font=("Helvetica", 15, "bold"), command=self.run_script)
         self.automation_label = tk.Label(self, text=self.automation_description, wraplength=500, font=("Helvetica", 14))
-        self.automation_credits = tk.Label(self, text=f"{self.automation_name}, {self.language.search('requested')} {self.automation_requester} {self.language.search('developed')} {self.automation_developer}", wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
+
+        self.bottom_frame = tk.Frame(self)
+        self.automation_credits = tk.Label(self.bottom_frame, text=f"{self.automation_name}, {self.language.search('requested')} {self.automation_requester} {self.language.search('developed')} {self.automation_developer}", wraplength=1000, font=("Helvetica", 12, 'bold'), fg='#0078D7')
+        if self.idiom == 'PT': self.quick_tips = tk.Label(self.bottom_frame, text=self.firebase.get_tips_or_news()[self.idiom])
+
         self.columns_frame = tk.Frame(self)
         self.image_label = tk.Label(self, image=self.country_image)
         self.logo_label = tk.Label(self, image=self.logo_image)
 
     # Put the components into the Application interface
     def components_position(self):
-        self.automation_credits.pack(side="bottom",pady=5)
+        self.bottom_frame.pack(side="bottom",pady=5)
+        self.automation_credits.pack()
+        if self.idiom == 'PT': self.quick_tips.pack()
+
         self.title_label.place(relx=0.5, rely=0.05, anchor="center")
         self.buttons_frame.pack(side='bottom',pady=25)
         self.exec_history.pack(side='left',padx=10)

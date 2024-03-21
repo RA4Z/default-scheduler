@@ -28,7 +28,7 @@ class Firebase():
     # GET QUICK TIPS OR NEWS FROM THE DATABASE
     def get_tips_or_news(self):
         self.requisition = requests.get(f'{self.link}/Noticias/.json', verify=False).json()
-        return self.requisition[randint(0,len(self.requisition))]
+        return self.requisition[randint(0,len(self.requisition)-1)]
     
     # GET ALL THE LOGS INSIDE THE DATABASE
     def get_mid_time(self, script_name:str, desired_total:int):
