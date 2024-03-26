@@ -15,6 +15,11 @@ class Firebase():
         data = {'duracao':duration,'horaExec':str(datetime.datetime.now()),'quantidade':quantity}
         self.requisition = requests.post(f'{self.link}/Algoritmos/{script_name}/{getpass.getuser().upper()}/.json', data=json.dumps(data), verify=False)
 
+    # CREATE A LOG OF EXECUTION IN REALTIME DATABASE
+    def post_error(self, script_name:str, message:str):
+        data = {'horaExec':str(datetime.datetime.now()),'mensagem':message}
+        self.requisition = requests.post(f'{self.link}/Erros/{script_name}/{getpass.getuser().upper()}/.json', data=json.dumps(data), verify=False)
+
     # MAKE ALTERATIONS IN A SPECIFIC LOG
     def patch_realtime(self,id:str,username:str,script_name:str,hour_exec:str,duration:str,quantity:int):
         data = {'duracao':duration,'horaExec':hour_exec,'quantidade':quantity}
