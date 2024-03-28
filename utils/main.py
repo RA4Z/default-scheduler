@@ -40,6 +40,7 @@ if script.app.result or script.scheduled_execution['scheduled?']:
         bar = progressbar.ProgressBar(max_value=len(colunas[script.app.data[0]['column_name']])-1)
 
         # - - - - - - - - - - - - - - - - - - - WRITE YOUR UNSCHEDULED CODE THERE - - - - - - - - - - - - - - - - - - - #
+        #Example of use => colunas[column_name][index]
         for i in range(len(colunas[script.app.data[0]['column_name']])):
             bar.update(i)
             time.sleep(3)
