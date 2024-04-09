@@ -1,7 +1,7 @@
 from openpyxl import Workbook, load_workbook
 
 class ExcelHandler:
-    def __init__(self, file_name):
+    def __init__(self, file_name:str):
         self.file_name = file_name
         self.workbook = None
         self.sheet = None
@@ -15,10 +15,10 @@ class ExcelHandler:
         else:
             self.workbook = load_workbook(filename=self.file_name)
 
-    def create_sheet(self, sheet_name):
+    def create_sheet(self, sheet_name:str):
         self.sheet = self.workbook.create_sheet(title=sheet_name)
 
-    def select_sheet(self, sheet_name):
+    def select_sheet(self, sheet_name:str):
         self.sheet = self.workbook[sheet_name]
 
     def write_cell(self, row:int, column:int, value):
@@ -49,7 +49,7 @@ class ExcelHandler:
                 return col
         return 0
     
-    def clean_data(self, initial_column, final_column, initial_row, final_row):
+    def clean_data(self, initial_column:int, final_column:int, initial_row:int, final_row:int):
         # Ensurer the end line is not shorter than the start line
         if final_row < initial_row:
             final_row = initial_row
@@ -78,7 +78,7 @@ class ExcelHandler:
     def sap_write_my_grid(self, my_grid, total_grid_rows:int, start_row:int, start_column:int):
         grid_column = my_grid.ColumnOrder
         rows = total_grid_rows
-        cols = my_grid.ColumnCount - 1
+        cols = my_grid.ColumnCount
         for i in range(-1,rows):
             for c in range(cols):
                 text = my_grid.getCellValue(i,grid_column(c))
