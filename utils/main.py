@@ -1,5 +1,3 @@
-import time
-
 import sys
 import os
 config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
@@ -19,7 +17,14 @@ sheet_excel = ExcelHandler('')
 mail_outlook = Outlook()
 language = Language(script.default_language)
 i = 0
+atualizadas = ''
 
-time.sleep(0.571)
+if work.LT23(): 
+    i += 1
+    atualizadas = f'{atualizadas}LT23; '
 
-print('complete')
+if work.MB51(): 
+    i += 1
+    atualizadas = f'{atualizadas}MB51; '
+
+resultado = f'Foram atualizados {i}/2 bases de dados sendo elas: {atualizadas}'
