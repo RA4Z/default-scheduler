@@ -24,3 +24,6 @@ def main():
         atualizadas = f'{atualizadas}MB51; '
 
     return f'Foram atualizados {i}/2 bases de dados sendo elas: {atualizadas}'
+
+if __name__ == "__main__":
+    print(main())
