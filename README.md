@@ -1,2 +1,2 @@
-# sap-default
-Os arquivos foram separados em pastas para facilitar as atualizações de versões dos scripts quando já possuírem arquivos executáveis
+# default-scheduler
+Modelo de script para agendamento de execuções em Python

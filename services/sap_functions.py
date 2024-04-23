@@ -1,5 +1,4 @@
 import win32com.client
-from tkinter import messagebox
 import re
 import os
 import time
@@ -21,8 +20,7 @@ class SAP():
         self.connection = self.__verify_sap_open()
         
         if self.connection.Children(0).info.user == '':
-            messagebox.showerror(title=self.language.search('sap_logon_err_title'),message=self.language.search('sap_logon_err_body'))
-            exit()
+            raise self.language.search('sap_logon_err_body')
 
         if self.connection.Children(0).info.systemName == 'EQ0':
             print(self.language.search('sap_system_err_body'))
@@ -44,8 +42,7 @@ class SAP():
             if self.scheduled_execution['scheduled?']:
                 return self.__open_sap()
             else:
-                messagebox.showerror(title=self.language.search('sap_open_err_title'),message=self.language.search('sap_open_err_body'))
-                exit()
+                raise self.language.search('sap_open_err_body')
 
     def __open_sap(self):
             path = "C:/Program Files (x86)/SAP/FrontEnd/SapGui/saplgpad.exe"
@@ -309,8 +306,7 @@ class SAP():
             self.session.findById("wnd[1]/usr/ctxtTCNT-PROF_DB").Text = "000000000001"
             self.session.findById("wnd[1]/tbar[0]/btn[0]").press()
         if not self.session.info.transaction == transaction:
-            messagebox.showerror(title=self.language.search('sap_transaction_err_title'), message=self.get_footer_message())
-            exit()
+            raise self.get_footer_message()
     
     # Selects the main screen of the SAP session.
     def select_main_screen(self):
@@ -461,8 +457,7 @@ class SAP():
         try:
             id_path = 'wnd[0]/mbar'
             if ';' not in path:
-                messagebox.showerror(title=self.language.search('sap_menu_err_title'),message=self.language.search('sap_menu_err_body'))
-                exit()
+                raise self.language.search('sap_menu_err_body')
 
             list_of_paths = path.split(';')
             for active_path in list_of_paths:
